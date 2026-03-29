@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生版：人生ヤバさ診断 💀</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 50px 40px;
+            max-width: 650px;
+            width: 100%;
+            box-shadow:
+                0 25px 80px rgba(0, 0, 0, 0.15),
+                0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: shimmer 8s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .start-screen,
+        .quiz-screen,
+        .result-screen {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .emoji-icon {
+            font-size: 5em;
+            margin-bottom: 20px;
+            display: block;
+            animation: bounce 2s ease infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0) scale(1);
+            }
+
+            50% {
+                transform: translateY(-10px) scale(1.05);
+            }
+        }
+
+        h1 {
+            font-size: 2.2em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 35px;
+            font-weight: 700;
+        }
+
+        .warning-text {
+            color: #e74c3c;
+            font-size: 0.95em;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.1) 0%, rgba(231, 76, 60, 0.05) 100%);
+            border-radius: 15px;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .progress-text {
+            font-size: 0.9em;
+            color: #999;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .question-number {
+            font-size: 1em;
+            color: #667eea;
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .question-emoji {
+            font-size: 3em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .question {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 35px;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option-btn {
+            padding: 22px 25px;
+            border: 2px solid transparent;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 1.15em;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 600;
+            color: #444;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .option-btn:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .option-btn:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .option-emoji {
+            font-size: 1.5em;
+        }
+
+        .start-btn,
+        .restart-btn,
+        .share-btn {
+            padding: 22px 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.3em;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .start-btn::after,
+        .restart-btn::after,
+        .share-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .start-btn:hover::after,
+        .restart-btn:hover::after,
+        .share-btn:hover::after {
+            left: 100%;
+        }
+
+        .start-btn:hover,
+        .restart-btn:hover,
+        .share-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .share-btn {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            box-shadow: 0 10px 30px rgba(17, 153, 142, 0.4);
+            font-size: 1.1em;
+            padding: 18px 45px;
+        }
+
+        .share-btn:hover {
+            box-shadow: 0 15px 40px rgba(17, 153, 142, 0.5);
+        }
+
+        .result-rank {
+            font-size: 6em;
+            font-weight: 900;
+            margin-bottom: 5px;
+            text-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            animation: rankPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes rankPop {
+            0% {
+                transform: scale(0) rotate(-10deg);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1) rotate(0);
+                opacity: 1;
+            }
+        }
+
+        .rank-emoji {
+            font-size: 4em;
+            margin-bottom: 10px;
+            animation: bounce 1s ease infinite;
+        }
+
+        .rank-s {
+            color: #00C853;
+            text-shadow: 0 0 30px rgba(0, 200, 83, 0.3);
+        }
+
+        .rank-a {
+            color: #64DD17;
+            text-shadow: 0 0 30px rgba(100, 221, 23, 0.3);
+        }
+
+        .rank-b {
+            color: #FF9100;
+            text-shadow: 0 0 30px rgba(255, 145, 0, 0.3);
+        }
+
+        .rank-c {
+            color: #FF1744;
+            text-shadow: 0 0 30px rgba(255, 23, 68, 0.3);
+        }
+
+        .rank-d {
+            color: #212121;
+            text-shadow: 0 0 30px rgba(33, 33, 33, 0.3);
+        }
+
+        .result-title {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .result-score {
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .result-comment {
+            font-size: 1.4em;
+            color: #333;
+            margin-bottom: 20px;
+            padding: 25px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            border-radius: 20px;
+            font-weight: 700;
+            line-height: 1.5;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .final-comment {
+            font-size: 1.2em;
+            color: #888;
+            font-style: italic;
+            margin-bottom: 35px;
+            font-weight: 600;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-in {
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Confetti Animation */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            top: -10px;
+            animation: confettiFall 3s ease-out forwards;
+            z-index: 1000;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 35px 25px;
+                border-radius: 25px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .emoji-icon {
+                font-size: 4em;
+            }
+
+            .question {
+                font-size: 1.3em;
+            }
+
+            .option-btn {
+                padding: 18px 20px;
+                font-size: 1.05em;
+            }
+
+            .result-rank {
+                font-size: 4.5em;
+            }
+
+            .start-btn,
+            .restart-btn {
+                padding: 18px 40px;
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- スタート画面 -->
+        <div class="start-screen fade-in" id="startScreen">
+            <span class="emoji-icon">🎓💀</span>
+            <h1>学生版：人生ヤバさ診断</h1>
+            <p class="subtitle">あなたはまだ人間か、それとも終わっているか</p>
+            <p class="warning-text">⚠️ 診断結果は全て真実です。覚悟してお進みください</p>
+            <button class="start-btn" onclick="startQuiz()">診断スタート →</button>
+        </div>
+
+        <!-- クイズ画面 -->
+        <div class="quiz-screen hidden" id="quizScreen">
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar" style="width: 16%"></div>
+            </div>
+            <p class="progress-text" id="progress">1 / 6</p>
+            <p class="question-number">Question <span id="qNumber">1</span></p>
+            <span class="question-emoji" id="questionEmoji">🌅</span>
+            <p class="question" id="question">読み込み中...</p>
+            <div class="options" id="options">
+            </div>
+        </div>
+
+        <!-- 結果画面 -->
+        <div class="result-screen hidden" id="resultScreen">
+            <span class="rank-emoji" id="rankEmoji">🏆</span>
+            <div class="result-rank" id="resultRank">S</div>
+            <p class="result-title" id="resultTitle">結果タイトル</p>
+            <p class="result-score" id="resultScore">スコア: 0点</p>
+            <p class="result-comment" id="resultComment">結果コメント</p>
+            <p class="final-comment" id="finalComment">追い打ちコメント</p>
+            <div class="btn-group">
+                <button class="share-btn" onclick="shareResult()">📤 結果をシェア</button>
+                <button class="restart-btn" onclick="restartQuiz()">🔄 もう一度診断</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "朝起きて最初にすることは？",
+                emoji: "🌅",
+                options: [
+                    { text: "顔洗って朝ごはん", emoji: "🧼", score: 0 },
+                    { text: "スマホチェック", emoji: "📱", score: 3 },
+                    { text: "二度寝する", emoji: "😴", score: 7 },
+                    { text: "昼まで寝る", emoji: "🛌", score: 10 }
+                ]
+            },
+            {
+                question: "課題の提出タイミングは？",
+                emoji: "📚",
+                options: [
+                    { text: "余裕で前日", emoji: "✅", score: 0 },
+                    { text: "前日ギリギリ", emoji: "⏰", score: 3 },
+                    { text: "当日ギリギリ", emoji: "⚡", score: 7 },
+                    { text: "出さない", emoji: "💀", score: 10 }
+                ]
+            },
+            {
+                question: "1日のスマホ時間は？",
+                emoji: "📱",
+                options: [
+                    { text: "〜2時間", emoji: "🌱", score: 0 },
+                    { text: "3〜5時間", emoji: "📲", score: 3 },
+                    { text: "6〜10時間", emoji: "🔥", score: 7 },
+                    { text: "気づいたら終わってる", emoji: "☠️", score: 10 }
+                ]
+            },
+            {
+                question: "テスト前の行動は？",
+                emoji: "📝",
+                options: [
+                    { text: "ちゃんと勉強", emoji: "📖", score: 0 },
+                    { text: "前日から慌てる", emoji: "😰", score: 3 },
+                    { text: "一夜漬け", emoji: "🌙", score: 7 },
+                    { text: "現実逃避", emoji: "🏃", score: 10 }
+                ]
+            },
+            {
+                question: "将来について考えてる？",
+                emoji: "🤔",
+                options: [
+                    { text: "具体的に考えてる", emoji: "✨", score: 0 },
+                    { text: "漠然と考えてる", emoji: "💭", score: 3 },
+                    { text: "たまに", emoji: "🤷", score: 7 },
+                    { text: "考えたら負け", emoji: "🙈", score: 10 }
+                ]
+            },
+            {
+                question: "寝る時間は？",
+                emoji: "🌙",
+                options: [
+                    { text: "22時〜24時", emoji: "😴", score: 0 },
+                    { text: "0時〜1時", emoji: "🌃", score: 3 },
+                    { text: "2時〜3時", emoji: "🦉", score: 7 },
+                    { text: "朝まで", emoji: "🧛", score: 10 }
+                ]
+            }
+        ];
+
+        const results = {
+            s: {
+                rank: "S",
+                title: "奇跡の人間",
+                emoji: "🏆",
+                comment: "社会にまだ適応している貴重な存在。保護対象。",
+                finalComments: ["改善方法：そのままでOK", "尊い存在すぎる", "周りの手本になれ"]
+            },
+            a: {
+                rank: "A",
+                title: "まだ戻れる",
+                emoji: "🌱",
+                comment: "ギリ人間。今なら間に合う。",
+                finalComments: ["改善方法：今すぐ行動", "警報が鳴ってる", "まだ間に合う、今なら"]
+            },
+            b: {
+                rank: "B",
+                title: "終わりの入り口",
+                emoji: "⚠️",
+                comment: "気づいてるけどやめられないタイプ。",
+                finalComments: ["改善方法：スマホ捨てろ", "自覚があるのが怖い", "止められない衝動"]
+            },
+            c: {
+                rank: "C",
+                title: "ほぼ終わり",
+                emoji: "💀",
+                comment: "生活がバグってる。修正不可。",
+                finalComments: ["改善方法：知らん", "とりあえず寝ろ", "親が泣いてる"]
+            },
+            d: {
+                rank: "D",
+                title: "伝説",
+                emoji: "👑",
+                comment: "ここまで来ると逆に誇れ。もう戻るな。",
+                finalComments: ["改善方法：もう無理", "この道を極めろ", "伝説は続く"]
+            }
+        };
+
+        let currentQuestion = 0;
+        let totalScore = 0;
+
+        function startQuiz() {
+            document.getElementById('startScreen').classList.add('hidden');
+            const quizScreen = document.getElementById('quizScreen');
+            quizScreen.classList.remove('hidden');
+            quizScreen.classList.add('slide-in');
+            currentQuestion = 0;
+            totalScore = 0;
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById('qNumber').textContent = currentQuestion + 1;
+            document.getElementById('progress').textContent = `${currentQuestion + 1} / ${questions.length}`;
+            document.getElementById('question').textContent = q.question;
+            document.getElementById('questionEmoji').textContent = q.emoji;
+
+            // Update progress bar
+            const progressPercent = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressBar').style.width = progressPercent + '%';
+
+            const optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = '';
+
+            q.options.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerHTML = `<span class="option-emoji">${option.emoji}</span> ${option.text}`;
+                btn.onclick = () => selectOption(option.score);
+                btn.style.animation = `fadeIn 0.4s ease ${index * 0.1}s both`;
+                optionsDiv.appendChild(btn);
+            });
+        }
+
+        function selectOption(score) {
+            totalScore += score;
+            currentQuestion++;
+
+            if (currentQuestion < questions.length) {
+                showQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            document.getElementById('quizScreen').classList.add('hidden');
+            const resultScreen = document.getElementById('resultScreen');
+            resultScreen.classList.remove('hidden');
+            resultScreen.classList.add('fade-in');
+
+            let result;
+            if (totalScore <= 15) {
+                result = results.s;
+            } else if (totalScore <= 30) {
+                result = results.a;
+            } else if (totalScore <= 45) {
+                result = results.b;
+            } else if (totalScore <= 60) {
+                result = results.c;
+            } else {
+                result = results.d;
+            }
+
+            const rankDiv = document.getElementById('resultRank');
+            rankDiv.textContent = result.rank;
+            rankDiv.className = 'result-rank rank-' + result.rank.toLowerCase();
+
+            document.getElementById('rankEmoji').textContent = result.emoji;
+            document.getElementById('resultTitle').textContent = result.title;
+            document.getElementById('resultScore').textContent = `スコア: ${totalScore}点`;
+            document.getElementById('resultComment').textContent = result.comment;
+
+            const randomComment = result.finalComments[Math.floor(Math.random() * result.finalComments.length)];
+            document.getElementById('finalComment').textContent = `💬 「${randomComment}」`;
+
+            // Create confetti effect for all ranks
+            createConfetti();
+        }
+
+        function createConfetti() {
+            const colors = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe', '#00f2fe'];
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    document.body.appendChild(confetti);
+
+                    setTimeout(() => confetti.remove(), 4000);
+                }, i * 30);
+            }
+        }
+
+        function restartQuiz() {
+            document.getElementById('resultScreen').classList.add('hidden');
+            const startScreen = document.getElementById('startScreen');
+            startScreen.classList.remove('hidden');
+            startScreen.classList.add('fade-in');
+        }
+
+        function shareResult() {
+            const rank = document.getElementById('resultRank').textContent;
+            const title = document.getElementById('resultTitle').textContent;
+            const score = document.getElementById('resultScore').textContent;
+
+            const shareText = `【学生版：人生ヤバさ診断】\n私の結果は${rank}ランク「${title}」\n${score}\n\nあなたも診断してみて！`;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: '学生版：人生ヤバさ診断',
+                    text: shareText,
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert('📋 結果をクリップボードにコピーしました！');
+                });
+            }
+        }
+    </script>
+</body>
+
+</html>
