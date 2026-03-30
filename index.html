@@ -1,1247 +1,1093 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🔥 人生ヤバさ診断 🔥</title>
-    <meta name="description" content="あなたの人生ヤバさ、測ってみる？結果がヤバいかもしれない...">
-
-    <!-- OGP Settings for SNS -->
-    <meta property="og:title" content="🔥 人生ヤバさ診断 🔥">
-    <meta property="og:description" content="診断したら全員終わってたｗｗあなたの結果は？">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://your-domain.github.io/shindan/">
-    <meta property="og:image" content="https://your-domain.github.io/shindan/ogp.png">
-    <meta property="og:site_name" content="人生ヤバさ診断">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="🔥 人生ヤバさ診断 🔥">
-    <meta name="twitter:description" content="診断したら全員終わってたｗｗ">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生生活習慣チェック</title>
+    <meta name="description" content="学生の生活習慣を4カテゴリで分析し、改善提案を行うWebアプリケーション">
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap');
-
+        /* ============================================
+           ベーススタイル
+           ============================================ */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            /* カラーパレット - 落ち着いたビジネス向け */
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg-light: #f8fafc;
+            --bg-white: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            
+            /* カテゴリカラー */
+            --sleep-color: #8b5cf6;
+            --study-color: #06b6d4;
+            --phone-color: #f59e0b;
+            --planning-color: #10b981;
         }
 
         body {
-            font-family: 'Noto Sans JP', sans-serif;
-            background: linear-gradient(-45deg, #ff006e, #8338ec, #3a86ff, #06ffa5);
-            background-size: 400% 400%;
-            animation: gradientBG 8s ease infinite;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans JP', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-primary);
+            line-height: 1.6;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-            overflow-x: hidden;
         }
 
-        @keyframes gradientBG {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-
-            100% {
-                background-position: 0% 50%;
-            }
+        /* ============================================
+           レイアウト
+           ============================================ */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 24px 16px;
         }
 
-        .app-container {
-            width: 100%;
-            max-width: 420px;
-        }
-
-        .screen {
-            background: white;
-            border-radius: 24px;
-            padding: 30px 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 0 4px rgba(255, 255, 255, 0.2) inset;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .screen::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 6px;
-            background: linear-gradient(90deg, #ff006e, #8338ec, #3a86ff);
-        }
-
-        /* LOADING SCREEN */
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.9);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            flex-direction: column;
-        }
-
-        .loading-screen.active {
-            display: flex;
-        }
-
-        .loading-spinner {
-            width: 60px;
-            height: 60px;
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top-color: #ff006e;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .loading-text {
-            color: white;
-            margin-top: 20px;
-            font-size: 1.1em;
-            font-weight: 700;
-        }
-
-        /* START SCREEN */
-        .start-content {
+        /* ============================================
+           ヘッダー
+           ============================================ */
+        .app-header {
             text-align: center;
+            margin-bottom: 32px;
+            padding: 24px 0;
         }
 
-        .trend-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #ff006e, #8338ec);
-            color: white;
-            padding: 6px 16px;
-            border-radius: 50px;
-            font-size: 0.8em;
+        .app-header h1 {
+            font-size: 1.75rem;
             font-weight: 700;
-            margin-bottom: 20px;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-
-            0%,
-            100% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.05);
-            }
-        }
-
-        .main-icon {
-            font-size: 5em;
-            margin-bottom: 15px;
-            animation: bounceIn 0.8s ease;
-        }
-
-        @keyframes bounceIn {
-            0% {
-                transform: scale(0);
-                opacity: 0;
-            }
-
-            50% {
-                transform: scale(1.2);
-            }
-
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        .app-title {
-            font-size: 1.8em;
-            font-weight: 900;
-            color: #1a1a2e;
+            color: var(--text-primary);
             margin-bottom: 8px;
-            line-height: 1.2;
         }
 
-        .app-subtitle {
-            font-size: 1em;
-            color: #666;
-            margin-bottom: 20px;
-            font-weight: 600;
+        .app-header p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
         }
 
-        .warning-box {
-            background: linear-gradient(135deg, #fff5f5, #fed7d7);
-            border: 2px solid #fc8181;
+        /* ============================================
+           カードコンポーネント
+           ============================================ */
+        .card {
+            background: var(--bg-white);
             border-radius: 12px;
-            padding: 12px;
-            margin-bottom: 20px;
-            font-size: 0.85em;
-            color: #c53030;
-            font-weight: 600;
+            padding: 24px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
         }
 
-        .feature-list {
+        .card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 16px;
             display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 20px;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ============================================
+           スタート画面
+           ============================================ */
+        .start-screen .intro {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 24px 0;
         }
 
         .feature-item {
+            background: var(--bg-light);
+            padding: 16px;
+            border-radius: 8px;
             text-align: center;
-            font-size: 0.75em;
-            color: #666;
+            font-size: 0.875rem;
         }
 
-        .feature-item span {
-            display: block;
-            font-size: 1.6em;
-            margin-bottom: 3px;
+        .feature-item .icon {
+            font-size: 1.5rem;
+            margin-bottom: 4px;
         }
 
-        /* BUTTONS */
-        .btn-primary {
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, #ff006e, #8338ec);
-            color: white;
-            border: none;
-            border-radius: 14px;
-            font-size: 1.15em;
-            font-weight: 700;
+        /* ============================================
+           ボタン
+           ============================================ */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
-            box-shadow: 0 8px 25px rgba(131, 56, 236, 0.4);
-            position: relative;
+            border: none;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--bg-light);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        /* ============================================
+           質問画面
+           ============================================ */
+        .progress-bar {
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
             overflow: hidden;
+            margin-bottom: 24px;
         }
 
-        .btn-primary:active {
-            transform: scale(0.95);
-            box-shadow: 0 4px 15px rgba(131, 56, 236, 0.3);
-        }
-
-        .btn-primary::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transform: rotate(30deg);
-            transition: all 0.5s;
-        }
-
-        .btn-primary:active::after {
-            left: 100%;
-        }
-
-        /* QUIZ SCREEN */
-        .progress-container {
-            margin-bottom: 25px;
-        }
-
-        .progress-bar-bg {
-            height: 10px;
-            background: #e2e8f0;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .progress-bar-fill {
+        .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #ff006e, #8338ec);
-            border-radius: 10px;
-            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .progress-text {
-            text-align: center;
-            margin-top: 8px;
-            font-size: 0.85em;
-            color: #666;
-            font-weight: 600;
+            background: var(--primary);
+            transition: width 0.3s ease;
         }
 
         .question-header {
-            text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
-        .question-number {
+        .question-category {
             display: inline-block;
-            background: linear-gradient(135deg, #ff006e, #8338ec);
-            color: white;
             padding: 4px 12px;
             border-radius: 20px;
-            font-size: 0.75em;
-            font-weight: 700;
-            margin-bottom: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 8px;
         }
 
-        .question-emoji {
-            font-size: 3.5em;
-            margin-bottom: 8px;
-            display: block;
-        }
+        .category-sleep { background: #ede9fe; color: #7c3aed; }
+        .category-study { background: #cffafe; color: #0891b2; }
+        .category-phone { background: #fef3c7; color: #d97706; }
+        .category-planning { background: #d1fae5; color: #059669; }
 
         .question-text {
-            font-size: 1.25em;
-            font-weight: 700;
-            color: #1a1a2e;
-            line-height: 1.4;
+            font-size: 1.125rem;
+            font-weight: 600;
         }
 
-        .options-container {
+        .options {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
         }
 
         .option-btn {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 16px 18px;
-            background: white;
-            border: 3px solid #e2e8f0;
-            border-radius: 14px;
+            padding: 16px 20px;
+            background: var(--bg-white);
+            border: 2px solid var(--border);
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s;
             text-align: left;
-            font-size: 1em;
-            font-weight: 600;
-            color: #333;
-            touch-action: manipulation;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        .option-btn:hover {
+            border-color: var(--primary);
+            background: #eff6ff;
         }
 
         .option-btn:active {
-            transform: scale(0.97);
-            border-color: #8338ec;
-            background: linear-gradient(135deg, #faf5ff, #f3e8ff);
-            box-shadow: 0 4px 15px rgba(131, 56, 236, 0.2);
-        }
-
-        .option-btn .opt-emoji {
-            font-size: 1.6em;
-        }
-
-        /* RESULT SCREEN - ENHANCED */
-        .result-card {
-            text-align: center;
-            padding: 25px 15px;
-            border-radius: 20px;
-            margin-bottom: 20px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            animation: zoomBounce 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        @keyframes zoomBounce {
-            0% {
-                transform: scale(0) rotate(-10deg);
-                opacity: 0;
-            }
-
-            50% {
-                transform: scale(1.1) rotate(2deg);
-            }
-
-            70% {
-                transform: scale(0.95) rotate(-1deg);
-            }
-
-            100% {
-                transform: scale(1) rotate(0);
-                opacity: 1;
-            }
-        }
-
-        /* Rank-specific backgrounds */
-        .result-card.rank-S {
-            background: linear-gradient(135deg, #00c853 0%, #00e676 50%, #69f0ae 100%);
-        }
-
-        .result-card.rank-A {
-            background: linear-gradient(135deg, #64dd17 0%, #76ff03 50%, #b2ff59 100%);
-        }
-
-        .result-card.rank-B {
-            background: linear-gradient(135deg, #ff9100 0%, #ffc400 50%, #ffd740 100%);
-        }
-
-        .result-card.rank-C {
-            background: linear-gradient(135deg, #ff1744 0%, #ff5252 50%, #ff8a80 100%);
-        }
-
-        .result-card.rank-D {
-            background: linear-gradient(135deg, #212121 0%, #424242 50%, #616161 100%);
-            color: white;
-        }
-
-        .result-card-inner {
-            position: relative;
-            z-index: 1;
-        }
-
-        .result-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(255, 255, 255, 0.1) 8px, rgba(255, 255, 255, 0.1) 16px);
-            pointer-events: none;
-        }
-
-        .rank-emoji-big {
-            font-size: 4.5em;
-            margin-bottom: 8px;
-            animation: float 2s ease infinite;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-        }
-
-        @keyframes float {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-8px);
-            }
-        }
-
-        .rank-letter {
-            font-size: 5.5em;
-            font-weight: 900;
-            line-height: 1;
-            margin-bottom: 8px;
-            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .result-card.rank-D .rank-letter,
-        .result-card.rank-C .rank-letter,
-        .result-card.rank-B .rank-letter {
-            color: white;
-            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-        }
-
-        .result-card.rank-S .rank-letter,
-        .result-card.rank-A .rank-letter {
-            color: white;
-            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .rank-title {
-            font-size: 1.4em;
-            font-weight: 700;
-            margin-bottom: 10px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .result-card.rank-S .rank-title,
-        .result-card.rank-A .rank-title {
-            color: rgba(0, 0, 0, 0.8);
-        }
-
-        .result-card.rank-B .rank-title,
-        .result-card.rank-C .rank-title,
-        .result-card.rank-D .rank-title {
-            color: white;
-        }
-
-        .rank-comment {
-            font-size: 1em;
-            font-weight: 600;
-            line-height: 1.5;
-            padding: 0 10px;
-        }
-
-        .result-card.rank-S .rank-comment,
-        .result-card.rank-A .rank-comment {
-            color: rgba(0, 0, 0, 0.7);
-        }
-
-        .result-card.rank-B .rank-comment,
-        .result-card.rank-C .rank-comment,
-        .result-card.rank-D .rank-comment {
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .score-box {
-            display: inline-block;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-size: 1em;
-            font-weight: 700;
-            margin: 15px 0;
-        }
-
-        .final-remark {
-            background: linear-gradient(135deg, #fff5f5, #ffe0e0);
-            border: 3px solid #ff006e;
-            border-radius: 14px;
-            padding: 15px;
-            font-size: 1.1em;
-            font-weight: 700;
-            color: #c53030;
-            margin-bottom: 20px;
-            font-style: italic;
-            text-align: center;
-            animation: fadeIn 0.5s ease 0.5s both;
-        }
-
-        /* SHARE SECTION */
-        .share-section {
-            margin-bottom: 15px;
-        }
-
-        .share-title {
-            font-size: 0.85em;
-            color: #666;
-            margin-bottom: 10px;
-            font-weight: 600;
-            text-align: center;
-        }
-
-        .share-buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
-
-        .btn-share {
-            flex: 1;
-            padding: 14px 10px;
-            border: none;
-            border-radius: 12px;
-            font-size: 0.95em;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-
-        .btn-share:active {
-            transform: scale(0.95);
-        }
-
-        .btn-x {
-            background: #1a1a2e;
-            color: white;
-        }
-
-        .btn-x:active {
-            background: #333;
-        }
-
-        .btn-line {
-            background: #06c755;
-            color: white;
-        }
-
-        .btn-line:active {
-            background: #05a349;
-        }
-
-        .btn-canvas {
-            background: linear-gradient(135deg, #ff006e, #8338ec);
-            color: white;
-            width: 100%;
-            margin-bottom: 10px;
-        }
-
-        .btn-canvas:active {
-            background: linear-gradient(135deg, #e0005f, #722bd4);
-        }
-
-        .btn-retry {
-            width: 100%;
-            padding: 16px;
-            background: white;
-            border: 3px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 1em;
-            font-weight: 700;
-            color: #666;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-retry:active {
-            border-color: #8338ec;
-            color: #8338ec;
-            background: #faf5ff;
             transform: scale(0.98);
         }
 
-        /* CANVAS PREVIEW */
-        .canvas-preview {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 10000;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            padding: 20px;
+        /* ============================================
+           結果画面
+           ============================================ */
+        .result-summary {
+            text-align: center;
+            padding: 32px 24px;
         }
 
-        .canvas-preview.active {
-            display: flex;
-        }
-
-        .canvas-preview img {
-            max-width: 100%;
-            max-height: 60vh;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-        }
-
-        .canvas-preview .close-btn {
-            margin-top: 20px;
-            padding: 12px 30px;
-            background: white;
-            border: none;
-            border-radius: 25px;
-            font-size: 1em;
+        .total-score {
+            font-size: 3rem;
             font-weight: 700;
-            cursor: pointer;
+            color: var(--primary);
+            line-height: 1;
         }
 
+        .total-score-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-top: 8px;
+        }
+
+        .result-message {
+            margin-top: 16px;
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        /* カテゴリ別スコア */
+        .category-scores {
+            margin: 24px 0;
+        }
+
+        .category-item {
+            margin-bottom: 20px;
+        }
+
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .category-name {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .category-score {
+            font-weight: 700;
+            font-size: 1.125rem;
+        }
+
+        .score-bar {
+            height: 12px;
+            background: var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .score-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 1s ease;
+        }
+
+        .fill-sleep { background: var(--sleep-color); }
+        .fill-study { background: var(--study-color); }
+        .fill-phone { background: var(--phone-color); }
+        .fill-planning { background: var(--planning-color); }
+
+        /* 分析コメント */
+        .analysis-section {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary);
+        }
+
+        .analysis-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .analysis-text {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* 改善提案 */
+        .suggestions-list {
+            list-style: none;
+        }
+
+        .suggestions-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .suggestions-list li:last-child {
+            border-bottom: none;
+        }
+
+        .suggestion-icon {
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .suggestion-text {
+            font-size: 0.95rem;
+        }
+
+        /* スコア凡例 */
+        .score-legend {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        /* ============================================
+           ユーティリティ
+           ============================================ */
         .hidden {
             display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mb-4 {
+            margin-bottom: 16px;
+        }
+
+        /* ============================================
+           アニメーション
+           ============================================ */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .fade-in {
             animation: fadeIn 0.4s ease;
         }
 
-        .slide-out {
-            animation: slideOut 0.3s ease forwards;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(15px);
+        /* ============================================
+           レスポンシブ
+           ============================================ */
+        @media (max-width: 640px) {
+            .container {
+                padding: 16px 12px;
             }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideOut {
-            from {
-                opacity: 1;
-                transform: translateX(0);
+            .app-header h1 {
+                font-size: 1.5rem;
             }
 
-            to {
-                opacity: 0;
-                transform: translateX(-30px);
-            }
-        }
-
-        /* VIBRATION EFFECT */
-        .vibrate {
-            animation: vibrate 0.3s linear;
-        }
-
-        @keyframes vibrate {
-
-            0%,
-            100% {
-                transform: translateX(0);
+            .feature-grid {
+                grid-template-columns: 1fr;
             }
 
-            20% {
-                transform: translateX(-3px) rotate(-1deg);
-            }
-
-            40% {
-                transform: translateX(3px) rotate(1deg);
-            }
-
-            60% {
-                transform: translateX(-3px) rotate(-1deg);
-            }
-
-            80% {
-                transform: translateX(3px) rotate(1deg);
-            }
-        }
-
-        /* CONFETTI */
-        .confetti {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            top: -10px;
-            animation: confettiFall 3s ease-out forwards;
-            z-index: 1000;
-        }
-
-        @keyframes confettiFall {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 1;
-            }
-
-            100% {
-                transform: translateY(100vh) rotate(720deg);
-                opacity: 0;
-            }
-        }
-
-        /* SPARKLE EFFECT */
-        .sparkle {
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            pointer-events: none;
-            z-index: 999;
-            animation: sparkle 1s ease-out forwards;
-        }
-
-        @keyframes sparkle {
-            0% {
-                transform: scale(0) rotate(0deg);
-                opacity: 1;
-            }
-
-            100% {
-                transform: scale(2) rotate(180deg);
-                opacity: 0;
-            }
-        }
-
-        @media (max-width: 380px) {
-            .screen {
-                padding: 25px 15px;
-            }
-
-            .app-title {
-                font-size: 1.6em;
-            }
-
-            .rank-letter {
-                font-size: 4.5em;
-            }
-
-            .rank-emoji-big {
-                font-size: 3.5em;
-            }
-
-            .question-text {
-                font-size: 1.15em;
-            }
-
-            .option-btn {
-                padding: 14px 15px;
+            .total-score {
+                font-size: 2.5rem;
             }
         }
     </style>
 </head>
-
 <body>
-    <!-- Loading Screen -->
-    <div class="loading-screen" id="loadingScreen">
-        <div class="loading-spinner"></div>
-        <div class="loading-text">診断準備中...</div>
-    </div>
+    <div class="container">
+        <!-- ヘッダー -->
+        <header class="app-header">
+            <h1>📊 学生生活習慣チェック</h1>
+            <p>4つのカテゴリで生活習慣を分析し、改善ポイントを提案します</p>
+        </header>
 
-    <!-- Canvas Preview Modal -->
-    <div class="canvas-preview" id="canvasPreview">
-        <img id="canvasImage" alt="結果画像">
-        <button class="close-btn" onclick="closeCanvasPreview()">✕ 閉じる</button>
-    </div>
-
-    <div class="app-container">
-        <!-- START SCREEN -->
-        <div class="screen" id="startScreen">
-            <div class="start-content">
-                <div class="trend-badge">🔥 今SNSでバズり中</div>
-                <div class="main-icon">🎓💀</div>
-                <h1 class="app-title">人生ヤバさ<br>診断</h1>
-                <p class="app-subtitle">マジで終わってるかも...</p>
-
-                <div class="warning-box">
-                    ⚠️ 診断結果はガチです<br>シェる覚悟で進んでね
+        <!-- スタート画面 -->
+        <div id="startScreen" class="start-screen">
+            <div class="card">
+                <div class="intro">
+                    <p>このアプリでは、学生の日常生活習慣を<br>「睡眠」「勉強」「スマホ使用」「計画性」の4カテゴリで評価します。</p>
                 </div>
 
-                <div class="feature-list">
+                <div class="feature-grid">
                     <div class="feature-item">
-                        <span>📊</span>
-                        6問
+                        <div class="icon">😴</div>
+                        <div>睡眠習慣</div>
                     </div>
                     <div class="feature-item">
-                        <span>🎯</span>
-                        5段階
+                        <div class="icon">📚</div>
+                        <div>学習管理</div>
                     </div>
                     <div class="feature-item">
-                        <span>📱</span>
-                        シェア
+                        <div class="icon">📱</div>
+                        <div>スマホ使用</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="icon">📅</div>
+                        <div>計画性</div>
                     </div>
                 </div>
 
-                <button class="btn-primary" onclick="startQuiz()">
-                    🚀 診断スタート
+                <button class="btn btn-primary" onclick="startQuiz()">
+                    診断を始める →
                 </button>
             </div>
         </div>
 
-        <!-- QUIZ SCREEN -->
-        <div class="screen hidden" id="quizScreen">
-            <div class="progress-container">
-                <div class="progress-bar-bg">
-                    <div class="progress-bar-fill" id="progressBar" style="width: 16%;"></div>
+        <!-- 質問画面 -->
+        <div id="quizScreen" class="hidden">
+            <div class="card">
+                <div class="progress-bar">
+                    <div id="progressBar" class="progress-fill" style="width: 0%"></div>
                 </div>
-                <div class="progress-text">Question <span id="qCurrent">1</span> / <span id="qTotal">6</span></div>
+
+                <div class="question-header">
+                    <span id="categoryBadge" class="question-category">カテゴリ</span>
+                    <h2 id="questionText" class="question-text">質問文</h2>
+                </div>
+
+                <div id="optionsContainer" class="options">
+                    <!-- オプションが動的に生成される -->
+                </div>
             </div>
 
-            <div class="question-header" id="questionHeader">
-                <div class="question-number">QUESTION <span id="qNum">1</span></div>
-                <span class="question-emoji" id="qEmoji">🌅</span>
-                <h2 class="question-text" id="qText">読み込み中...</h2>
-            </div>
-
-            <div class="options-container" id="options">
-            </div>
+            <p class="text-center" style="color: var(--text-secondary); font-size: 0.875rem;">
+                質問 <span id="currentQ">1</span> / <span id="totalQ">8</span>
+            </p>
         </div>
 
-        <!-- RESULT SCREEN -->
-        <div class="screen hidden" id="resultScreen">
-            <div class="result-card" id="resultCard">
-                <div class="result-card-inner">
-                    <div class="rank-emoji-big" id="rankEmoji">🏆</div>
-                    <div class="rank-letter" id="rankLetter">S</div>
-                    <div class="rank-title" id="rankTitle">奇跡の人間</div>
-                    <div class="rank-comment" id="rankComment">社会にまだ適応している貴重な存在</div>
+        <!-- 結果画面 -->
+        <div id="resultScreen" class="hidden">
+            <!-- 総合スコア -->
+            <div class="card result-summary">
+                <div class="total-score" id="totalScore">0</div>
+                <div class="total-score-label">総合スコア / 100点</div>
+                <div class="result-message" id="resultMessage">分析中...</div>
+            </div>
+
+            <!-- カテゴリ別スコア -->
+            <div class="card category-scores">
+                <h3 class="card-title">📈 カテゴリ別スコア</h3>
+
+                <div class="category-item">
+                    <div class="category-header">
+                        <span class="category-name">
+                            <span>😴</span> 睡眠習慣
+                        </span>
+                        <span class="category-score" id="sleepScore">0点</span>
+                    </div>
+                    <div class="score-bar">
+                        <div id="sleepBar" class="score-fill fill-sleep" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="category-item">
+                    <div class="category-header">
+                        <span class="category-name">
+                            <span>📚</span> 学習管理
+                        </span>
+                        <span class="category-score" id="studyScore">0点</span>
+                    </div>
+                    <div class="score-bar">
+                        <div id="studyBar" class="score-fill fill-study" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="category-item">
+                    <div class="category-header">
+                        <span class="category-name">
+                            <span>📱</span> スマホ使用
+                        </span>
+                        <span class="category-score" id="phoneScore">0点</span>
+                    </div>
+                    <div class="score-bar">
+                        <div id="phoneBar" class="score-fill fill-phone" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="category-item">
+                    <div class="category-header">
+                        <span class="category-name">
+                            <span>📅</span> 計画性
+                        </span>
+                        <span class="category-score" id="planningScore">0点</span>
+                    </div>
+                    <div class="score-bar">
+                        <div id="planningBar" class="score-fill fill-planning" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="score-legend">
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: var(--success)"></div>
+                        <span>0-25点: 良好</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: var(--warning)"></div>
+                        <span>26-50点: 要注意</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: var(--danger)"></div>
+                        <span>51点以上: 改善が必要</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="score-box" id="scoreBox">スコア: 0点</div>
-
-            <div class="final-remark" id="finalRemark">
-                💬 「そのままでOK」
+            <!-- 分析コメント -->
+            <div class="card analysis-section">
+                <div class="analysis-title">🔍 分析結果</div>
+                <p id="analysisText" class="analysis-text">分析を計算中...</p>
             </div>
 
-            <div class="share-section">
-                <div class="share-title">📤 友達に晒そう！</div>
-                <button class="btn-share btn-canvas" onclick="generateResultImage()">
-                    🎨 画像を生成してシェア
-                </button>
-                <div class="share-buttons">
-                    <button class="btn-share btn-x" onclick="shareToX()">
-                        𝕏 Xでポスト
-                    </button>
-                    <button class="btn-share btn-line" onclick="shareToLine()">
-                        💬 LINE
-                    </button>
-                </div>
+            <!-- 改善提案 -->
+            <div class="card">
+                <h3 class="card-title">💡 改善提案</h3>
+                <ul id="suggestionsList" class="suggestions-list">
+                    <!-- 動的に生成 -->
+                </ul>
             </div>
 
-            <button class="btn-retry" onclick="restartQuiz()">
-                🔄 もう一回診断する
+            <!-- 再診断ボタン -->
+            <button class="btn btn-secondary mb-4" onclick="restartQuiz()">
+                ← もう一度診断する
             </button>
         </div>
     </div>
 
     <script>
-        // Data
+        // ============================================
+        // データ定義
+        // ============================================
+
+        /**
+         * 質問データ
+         * 各質問はカテゴリ、質問文、選択肢配列を持つ
+         * 選択肢はスコア（低いほど良い）と表示テキストを持つ
+         */
         const questions = [
+            // 睡眠カテゴリ
             {
-                q: "朝起きて最初にすることは？",
-                emoji: "🌅",
-                opts: [
-                    { txt: "顔洗って朝ごはん", emoji: "🧼", score: 0 },
-                    { txt: "スマホチェック", emoji: "📱", score: 3 },
-                    { txt: "二度寝する", emoji: "😴", score: 7 },
-                    { txt: "昼まで寝る", emoji: "🛌", score: 10 }
+                id: 'sleep_1',
+                category: 'sleep',
+                categoryName: '睡眠習慣',
+                categoryClass: 'category-sleep',
+                text: '普段の就寝時間は？',
+                options: [
+                    { score: 0, text: '22時〜23時' },
+                    { score: 5, text: '24時前後' },
+                    { score: 10, text: '深夜1時〜2時' },
+                    { score: 15, text: '深夜3時以降' }
                 ]
             },
             {
-                q: "課題の提出タイミングは？",
-                emoji: "📚",
-                opts: [
-                    { txt: "余裕で前日", emoji: "✅", score: 0 },
-                    { txt: "前日ギリギリ", emoji: "⏰", score: 3 },
-                    { txt: "当日ギリギリ", emoji: "⚡", score: 7 },
-                    { txt: "出さない", emoji: "💀", score: 10 }
+                id: 'sleep_2',
+                category: 'sleep',
+                categoryName: '睡眠習慣',
+                categoryClass: 'category-sleep',
+                text: '起床時間は？',
+                options: [
+                    { score: 0, text: '6時〜7時' },
+                    { score: 5, text: '7時〜8時' },
+                    { score: 10, text: '9時〜10時' },
+                    { score: 15, text: '10時以降' }
+                ]
+            },
+            // 学習管理カテゴリ
+            {
+                id: 'study_1',
+                category: 'study',
+                categoryName: '学習管理',
+                categoryClass: 'category-study',
+                text: '1日の学習時間は？',
+                options: [
+                    { score: 0, text: '3時間以上' },
+                    { score: 5, text: '1〜2時間' },
+                    { score: 10, text: '30分〜1時間' },
+                    { score: 15, text: 'ほとんどしない' }
                 ]
             },
             {
-                q: "1日のスマホ時間は？",
-                emoji: "📱",
-                opts: [
-                    { txt: "〜2時間", emoji: "🌱", score: 0 },
-                    { txt: "3〜5時間", emoji: "📲", score: 3 },
-                    { txt: "6〜10時間", emoji: "🔥", score: 7 },
-                    { txt: "気づいたら終わってる", emoji: "☠️", score: 10 }
+                id: 'study_2',
+                category: 'study',
+                categoryName: '学習管理',
+                categoryClass: 'category-study',
+                text: '課題の提出は？',
+                options: [
+                    { score: 0, text: '期限前に余裕を持って提出' },
+                    { score: 5, text: '期限前日に提出' },
+                    { score: 10, text: '期限当日にギリギリ提出' },
+                    { score: 15, text: '提出が遅れることもある' }
+                ]
+            },
+            // スマホ使用カテゴリ
+            {
+                id: 'phone_1',
+                category: 'phone',
+                categoryName: 'スマホ使用',
+                categoryClass: 'category-phone',
+                text: '1日のスマホ使用時間は？',
+                options: [
+                    { score: 0, text: '2時間以下' },
+                    { score: 5, text: '3〜5時間' },
+                    { score: 10, text: '6〜8時間' },
+                    { score: 15, text: '9時間以上' }
                 ]
             },
             {
-                q: "テスト前の行動は？",
-                emoji: "📝",
-                opts: [
-                    { txt: "ちゃんと勉強", emoji: "📖", score: 0 },
-                    { txt: "前日から慌てる", emoji: "😰", score: 3 },
-                    { txt: "一夜漬け", emoji: "🌙", score: 7 },
-                    { txt: "現実逃避", emoji: "🏃", score: 10 }
+                id: 'phone_2',
+                category: 'phone',
+                categoryName: 'スマホ使用',
+                categoryClass: 'category-phone',
+                text: '寝る前のスマホ使用は？',
+                options: [
+                    { score: 0, text: '寝る30分前には使わない' },
+                    { score: 5, text: '寝る10分前まで使用' },
+                    { score: 10, text: '布団に入ってからも使用' },
+                    { score: 15, text: '使いながら寝落ちすることもある' }
+                ]
+            },
+            // 計画性カテゴリ
+            {
+                id: 'planning_1',
+                category: 'planning',
+                categoryName: '計画性',
+                categoryClass: 'category-planning',
+                text: '日々の予定管理は？',
+                options: [
+                    { score: 0, text: 'スケジュール帳やアプリで管理' },
+                    { score: 5, text: '頭の中で管理' },
+                    { score: 10, text: '必要になったら考える' },
+                    { score: 15, text: '予定を立てることは少ない' }
                 ]
             },
             {
-                q: "将来について考えてる？",
-                emoji: "🤔",
-                opts: [
-                    { txt: "具体的に考えてる", emoji: "✨", score: 0 },
-                    { txt: "漠然と考えてる", emoji: "💭", score: 3 },
-                    { txt: "たまに", emoji: "🤷", score: 7 },
-                    { txt: "考えたら負け", emoji: "🙈", score: 10 }
-                ]
-            },
-            {
-                q: "寝る時間は？",
-                emoji: "🌙",
-                opts: [
-                    { txt: "22時〜24時", emoji: "😴", score: 0 },
-                    { txt: "0時〜1時", emoji: "🌃", score: 3 },
-                    { txt: "2時〜3時", emoji: "🦉", score: 7 },
-                    { txt: "朝まで", emoji: "🧛", score: 10 }
+                id: 'planning_2',
+                category: 'planning',
+                categoryName: '計画性',
+                categoryClass: 'category-planning',
+                text: '将来の目標は？',
+                options: [
+                    { score: 0, text: '具体的に設定している' },
+                    { score: 5, text: '漠然と考えている' },
+                    { score: 10, text: 'たまに考える' },
+                    { score: 15, text: 'あまり考えていない' }
                 ]
             }
         ];
 
-        const ranks = {
-            S: {
-                emoji: "🏆",
-                title: "奇跡の人間",
-                comment: "社会にまだ適応してる貴重な存在",
-                remarks: ["神すぎん？", "そのままでOK", "尊い...", "周りの手本になれ"]
+        /**
+         * 改善提案データ
+         * カテゴリとスコア範囲に応じたアドバイスを定義
+         */
+        const suggestions = {
+            sleep: {
+                high: [
+                    { icon: '🌙', text: '就寝時間を1時間早めることで、睡眠の質が向上します' },
+                    { icon: '📱', text: '寝る1時間前はスマホを避け、リラックスできる環境を作りましょう' },
+                    { icon: '🛏️', text: '朝の光を取り入れることで、体内時計が整います' }
+                ],
+                medium: [
+                    { icon: '⏰', text: '起床時間を固定することで、生活リズムが安定します' },
+                    { icon: '😴', text: '昼寝は20分以内に抑えると、夜の睡眠に影響しにくいです' }
+                ],
+                low: [
+                    { icon: '✅', text: '睡眠時間は良好です。現在のリズムを維持しましょう' }
+                ]
             },
-            A: {
-                emoji: "🌱",
-                title: "まだ戻れる",
-                comment: "ギリ人間。今なら間に合う",
-                remarks: ["警報鳴ってるよ", "今すぐ行動", "まだ間に合う...多分", "危険水域"]
+            study: {
+                high: [
+                    { icon: '📅', text: '課題の期限をカレンダーに登録し、余裕を持って取り組みましょう' },
+                    { icon: '🍅', text: 'ポモドーロテクニック（25分集中・5分休憩）で効率的に学習しましょう' },
+                    { icon: '📚', text: '毎日決まった時間に学習することで、習慣化しやすくなります' }
+                ],
+                medium: [
+                    { icon: '🎯', text: '小さな目標を設定し、達成することでモチベーションを保ちましょう' },
+                    { icon: '📝', text: '学習内容をメモに残すことで、理解が深まります' }
+                ],
+                low: [
+                    { icon: '✅', text: '学習習慣は良好です。継続することが大切です' }
+                ]
             },
-            B: {
-                emoji: "⚠️",
-                title: "終わりの入り口",
-                comment: "気づいてるけどやめられない",
-                remarks: ["自覚あるのが怖い", "スマホ捨てろ", "止まれない衝動", "深みにハマってる"]
+            phone: {
+                high: [
+                    { icon: '📱', text: 'スクリーンタイム機能で使用時間を可視化し、意識付けをしましょう' },
+                    { icon: '🚫', text: '学習中はスマホを別の部屋に置くか、通知をオフにしましょう' },
+                    { icon: '📵', text: '就寝前1時間はスマホを使用しないルールを作りましょう' }
+                ],
+                medium: [
+                    { icon: '⏱️', text: 'SNSは決まった時間にのみ確認するように制限しましょう' },
+                    { icon: '🎯', text: 'スマホを使う目的を明確にし、無駄な使用を減らしましょう' }
+                ],
+                low: [
+                    { icon: '✅', text: 'スマホ使用は適切に管理されています' }
+                ]
             },
-            C: {
-                emoji: "💀",
-                title: "ほぼ終わり",
-                comment: "生活バグってる。修正不可",
-                remarks: ["知らん", "とりあえず寝ろ", "親泣いてる", "人生リセットボタン押したい"]
-            },
-            D: {
-                emoji: "👑",
-                title: "伝説",
-                comment: "ここまで来ると逆に誇れ",
-                remarks: ["もう無理", "この道極めろ", "伝説は続く", "後戻り不可"]
+            planning: {
+                high: [
+                    { icon: '📔', text: '毎朝3つの優先事項をリストアップし、計画的に行動しましょう' },
+                    { icon: '🎯', text: '短期目標と長期目標を設定し、具体的なアクションプランを立てましょう' },
+                    { icon: '📅', text: '週の初めにスケジュールを確認し、予定を調整しましょう' }
+                ],
+                medium: [
+                    { icon: '📝', text: 'TODOリストを作成し、完了したタスクにチェックを付けましょう' },
+                    { icon: '🤔', text: '毎晩、翌日の予定を頭の中で整理する時間を作りましょう' }
+                ],
+                low: [
+                    { icon: '✅', text: '計画性は良好です。目標に向かって着実に進みましょう' }
+                ]
             }
         };
 
-        let currentQ = 0, totalScore = 0, currentRank = '';
+        // ============================================
+        // 状態管理
+        // ============================================
 
-        // Start Quiz with loading
+        let currentQuestionIndex = 0;
+        const categoryScores = {
+            sleep: 0,
+            study: 0,
+            phone: 0,
+            planning: 0
+        };
+
+        // ============================================
+        // 画面遷移関数
+        // ============================================
+
+        /**
+         * 診断開始
+         * スタート画面を非表示にし、質問画面を表示
+         */
         function startQuiz() {
-            const loading = document.getElementById('loadingScreen');
-            loading.classList.add('active');
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('quizScreen').classList.remove('hidden');
+            document.getElementById('quizScreen').classList.add('fade-in');
 
-            setTimeout(() => {
-                loading.classList.remove('active');
-                document.getElementById('startScreen').classList.add('hidden');
-                document.getElementById('quizScreen').classList.remove('hidden');
-                document.getElementById('quizScreen').classList.add('fade-in');
-                currentQ = 0;
-                totalScore = 0;
-                showQuestion();
-            }, 1000);
+            // 状態をリセット
+            currentQuestionIndex = 0;
+            Object.keys(categoryScores).forEach(key => {
+                categoryScores[key] = 0;
+            });
+
+            // 総質問数を表示
+            document.getElementById('totalQ').textContent = questions.length;
+
+            showQuestion();
         }
 
-        // Show Question with animation
+        /**
+         * 質問を表示
+         * 現在の質問インデックスに応じた質問と選択肢をレンダリング
+         */
         function showQuestion() {
-            const q = questions[currentQ];
-            const header = document.getElementById('questionHeader');
-            const optsDiv = document.getElementById('options');
+            const question = questions[currentQuestionIndex];
 
-            header.style.opacity = '0';
-            header.style.transform = 'translateX(-20px)';
-            header.style.transition = 'all 0.3s';
+            // 進捗バー更新
+            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
 
-            setTimeout(() => {
-                document.getElementById('qCurrent').textContent = currentQ + 1;
-                document.getElementById('qNum').textContent = currentQ + 1;
-                document.getElementById('qTotal').textContent = questions.length;
-                document.getElementById('qText').textContent = q.q;
-                document.getElementById('qEmoji').textContent = q.emoji;
+            // 質問番号更新
+            document.getElementById('currentQ').textContent = currentQuestionIndex + 1;
 
-                const progress = ((currentQ + 1) / questions.length) * 100;
-                document.getElementById('progressBar').style.width = progress + '%';
+            // カテゴリバッジ設定
+            const badge = document.getElementById('categoryBadge');
+            badge.textContent = question.categoryName;
+            badge.className = `question-category ${question.categoryClass}`;
 
-                header.style.opacity = '1';
-                header.style.transform = 'translateX(0)';
+            // 質問文設定
+            document.getElementById('questionText').textContent = question.text;
 
-                optsDiv.innerHTML = '';
-                q.opts.forEach((opt, i) => {
-                    const btn = document.createElement('button');
-                    btn.className = 'option-btn';
-                    btn.innerHTML = `<span class="opt-emoji">${opt.emoji}</span> ${opt.txt}`;
-                    btn.style.opacity = '0';
-                    btn.style.transform = 'translateY(10px)';
-                    btn.onclick = () => select(opt.score, btn);
-                    optsDiv.appendChild(btn);
+            // 選択肢生成
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
 
-                    setTimeout(() => {
-                        btn.style.transition = 'all 0.3s';
-                        btn.style.opacity = '1';
-                        btn.style.transform = 'translateY(0)';
-                    }, i * 80);
-                });
-            }, 300);
-        }
+            question.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'option-btn';
+                button.textContent = option.text;
+                button.onclick = () => selectOption(option.score, question.category);
+                
+                // フェードインアニメーション
+                button.style.opacity = '0';
+                button.style.transform = 'translateY(10px)';
+                optionsContainer.appendChild(button);
 
-        // Select Option with effects
-        function select(score, btn) {
-            const rect = btn.getBoundingClientRect();
-            createSparkle(rect.left + rect.width / 2, rect.top + rect.height / 2);
-
-            btn.style.transform = 'scale(0.95)';
-            btn.style.borderColor = '#8338ec';
-            btn.style.background = 'linear-gradient(135deg, #faf5ff, #f3e8ff)';
-
-            totalScore += score;
-            currentQ++;
-
-            setTimeout(() => {
-                if (currentQ < questions.length) {
-                    showQuestion();
-                } else {
-                    showResult();
-                }
-            }, 300);
-        }
-
-        // Create Sparkle Effect
-        function createSparkle(x, y) {
-            const colors = ['#ff006e', '#8338ec', '#3a86ff', '#06ffa5', '#ffbe0b'];
-            for (let i = 0; i < 5; i++) {
                 setTimeout(() => {
-                    const sparkle = document.createElement('div');
-                    sparkle.className = 'sparkle';
-                    sparkle.style.left = x + 'px';
-                    sparkle.style.top = y + 'px';
-                    sparkle.style.background = colors[Math.floor(Math.random() * colors.length)];
-                    sparkle.style.borderRadius = '50%';
-                    sparkle.style.transform = `translate(${Math.random() * 40 - 20}px, ${Math.random() * 40 - 20}px)`;
-                    document.body.appendChild(sparkle);
-                    setTimeout(() => sparkle.remove(), 1000);
-                }, i * 50);
+                    button.style.transition = 'all 0.3s ease';
+                    button.style.opacity = '1';
+                    button.style.transform = 'translateY(0)';
+                }, index * 80);
+            });
+        }
+
+        /**
+         * 選択肢を選択
+         * @param {number} score - 選択肢のスコア
+         * @param {string} category - 質問のカテゴリ
+         */
+        function selectOption(score, category) {
+            // カテゴリスコアに加算
+            categoryScores[category] += score;
+
+            // 次の質問へ
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < questions.length) {
+                showQuestion();
+            } else {
+                showResult();
             }
         }
 
-        // Show Result with delay and effects
+        /**
+         * 結果画面を表示
+         * スコア計算、分析、改善提案をレンダリング
+         */
         function showResult() {
             document.getElementById('quizScreen').classList.add('hidden');
             document.getElementById('resultScreen').classList.remove('hidden');
+            document.getElementById('resultScreen').classList.add('fade-in');
 
-            if (totalScore <= 15) currentRank = 'S';
-            else if (totalScore <= 30) currentRank = 'A';
-            else if (totalScore <= 45) currentRank = 'B';
-            else if (totalScore <= 60) currentRank = 'C';
-            else currentRank = 'D';
+            // 総合スコア計算（最大100点に正規化）
+            const totalScore = calculateTotalScore();
+            
+            // スコア表示（アニメーション）
+            animateScore('totalScore', totalScore);
 
-            const r = ranks[currentRank];
+            // 評価メッセージ
+            document.getElementById('resultMessage').textContent = getEvaluationMessage(totalScore);
 
-            const card = document.getElementById('resultCard');
-            card.className = `result-card rank-${currentRank}`;
+            // カテゴリ別スコア表示
+            displayCategoryScores();
 
-            document.getElementById('rankEmoji').textContent = r.emoji;
-            document.getElementById('rankLetter').textContent = currentRank;
-            document.getElementById('rankTitle').textContent = r.title;
-            document.getElementById('rankComment').textContent = r.comment;
-            document.getElementById('scoreBox').textContent = `スコア: ${totalScore}点`;
+            // 分析コメント
+            document.getElementById('analysisText').textContent = generateAnalysis();
 
-            const remark = r.remarks[Math.floor(Math.random() * r.remarks.length)];
-            document.getElementById('finalRemark').textContent = `💬 「${remark}」`;
+            // 改善提案
+            displaySuggestions();
+        }
 
-            if (currentRank === 'D' || currentRank === 'C') {
-                setTimeout(() => {
-                    card.classList.add('vibrate');
-                }, 800);
-            }
+        /**
+         * 総合スコアを計算
+         * @returns {number} 0-100のスコア
+         */
+        function calculateTotalScore() {
+            const maxScorePerCategory = 30; // 各カテゴリ2問 × 最大15点
+            let total = 0;
+            
+            Object.values(categoryScores).forEach(score => {
+                total += score;
+            });
 
-            setTimeout(() => {
-                for (let i = 0; i < 60; i++) {
-                    setTimeout(() => {
-                        const c = document.createElement('div');
-                        c.className = 'confetti';
-                        c.style.left = Math.random() * 100 + 'vw';
-                        c.style.background = ['#ff006e', '#8338ec', '#3a86ff', '#06ffa5', '#ffbe0b'][Math.floor(Math.random() * 5)];
-                        c.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                        document.body.appendChild(c);
-                        setTimeout(() => c.remove(), 4000);
-                    }, i * 30);
+            // 100点満点に換算（低いほど良いので逆転）
+            const maxTotal = Object.keys(categoryScores).length * maxScorePerCategory;
+            const normalizedScore = Math.round(((maxTotal - total) / maxTotal) * 100);
+            
+            return Math.max(0, normalizedScore);
+        }
+
+        /**
+         * スコア表示アニメーション
+         * @param {string} elementId - 表示する要素のID
+         * @param {number} targetScore - 目標スコア
+         */
+        function animateScore(elementId, targetScore) {
+            const element = document.getElementById(elementId);
+            const duration = 1000;
+            const startTime = performance.now();
+
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // easeOutQuart
+                const easeProgress = 1 - Math.pow(1 - progress, 4);
+                const currentScore = Math.round(targetScore * easeProgress);
+                
+                element.textContent = currentScore;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
                 }
-            }, 500);
-        }
-
-        // Generate Result Image using Canvas
-        function generateResultImage() {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = 1200;
-            canvas.height = 630;
-
-            const r = ranks[currentRank];
-
-            const gradients = {
-                S: ['#00c853', '#00e676'],
-                A: ['#64dd17', '#76ff03'],
-                B: ['#ff9100', '#ffc400'],
-                C: ['#ff1744', '#ff5252'],
-                D: ['#212121', '#424242']
-            };
-
-            const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-            grad.addColorStop(0, gradients[currentRank][0]);
-            grad.addColorStop(1, gradients[currentRank][1]);
-            ctx.fillStyle = grad;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
-            for (let i = 0; i < canvas.width; i += 20) {
-                ctx.fillRect(i, 0, 10, canvas.height);
             }
 
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
-            roundRect(ctx, 100, 80, 1000, 470, 30);
-            ctx.fill();
-
-            ctx.fillStyle = '#1a1a2e';
-            ctx.font = 'bold 50px "Noto Sans JP", sans-serif';
-            ctx.textAlign = 'center';
-            ctx.fillText('🔥 人生ヤバさ診断 🔥', 600, 150);
-
-            ctx.font = '120px sans-serif';
-            ctx.fillText(r.emoji, 600, 270);
-
-            ctx.fillStyle = gradients[currentRank][0];
-            ctx.font = 'bold 180px "Noto Sans JP", sans-serif';
-            ctx.fillText(currentRank, 600, 380);
-
-            ctx.fillStyle = '#333';
-            ctx.font = 'bold 50px "Noto Sans JP", sans-serif';
-            ctx.fillText(r.title, 600, 440);
-
-            ctx.fillStyle = '#666';
-            ctx.font = 'bold 40px "Noto Sans JP", sans-serif';
-            ctx.fillText(`スコア: ${totalScore}点`, 600, 500);
-
-            ctx.fillStyle = 'white';
-            ctx.font = 'bold 35px "Noto Sans JP", sans-serif';
-            ctx.fillText('あなたの結果は？診断してみよう！', 600, 580);
-
-            const preview = document.getElementById('canvasPreview');
-            const img = document.getElementById('canvasImage');
-            img.src = canvas.toDataURL('image/png');
-            preview.classList.add('active');
-
-            window.resultCanvas = canvas;
+            requestAnimationFrame(update);
         }
 
-        function roundRect(ctx, x, y, width, height, radius) {
-            ctx.beginPath();
-            ctx.moveTo(x + radius, y);
-            ctx.lineTo(x + width - radius, y);
-            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-            ctx.lineTo(x + width, y + height - radius);
-            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-            ctx.lineTo(x + radius, y + height);
-            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-            ctx.lineTo(x, y + radius);
-            ctx.quadraticCurveTo(x, y, x + radius, y);
-            ctx.closePath();
+        /**
+         * 評価メッセージを取得
+         * @param {number} score - 総合スコア
+         * @returns {string} 評価メッセージ
+         */
+        function getEvaluationMessage(score) {
+            if (score >= 80) return '生活習慣は非常に良好です 🌟';
+            if (score >= 60) return '全体的に良好です。一部改善の余地あり 👍';
+            if (score >= 40) return '改善ポイントが見られます 📋';
+            return '生活習慣の見直しをお勧めします 💪';
         }
 
-        function closeCanvasPreview() {
-            document.getElementById('canvasPreview').classList.remove('active');
-        }
-
-        // Share to X (Twitter) - Short viral text
-        function shareToX() {
-            const r = ranks[currentRank];
-            const texts = [
-                `これガチで終わってたｗ\n${currentRank}ランク「${r.title}」\n\nあなたの結果は？`,
-                `診断したらヤバかったｗｗ\n${currentRank}ランク：${r.title}\n\n試してみて！`,
-                `人生ヤバさ診断、マジで当たる...\n私は「${r.title}」\n\n#人生ヤバさ診断`,
-                `友達に送りたくなる診断ｗ\n${currentRank}ランク「${r.title}」\n\nあなたもやってみて！`
+        /**
+         * カテゴリ別スコアを表示
+         */
+        function displayCategoryScores() {
+            const maxPerCategory = 30;
+            const categories = [
+                { key: 'sleep', name: 'sleep' },
+                { key: 'study', name: 'study' },
+                { key: 'phone', name: 'phone' },
+                { key: 'planning', name: 'planning' }
             ];
-            const text = texts[Math.floor(Math.random() * texts.length)];
-            const url = window.location.href;
-            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+
+            categories.forEach(cat => {
+                const score = categoryScores[cat.key];
+                const normalizedScore = Math.round(((maxPerCategory - score) / maxPerCategory) * 100);
+                const displayScore = Math.max(0, normalizedScore);
+
+                // スコアテキスト更新
+                document.getElementById(`${cat.name}Score`).textContent = `${displayScore}点`;
+
+                // バー幅更新（アニメーション用に少し遅延）
+                setTimeout(() => {
+                    document.getElementById(`${cat.name}Bar`).style.width = `${displayScore}%`;
+                }, 300);
+            });
         }
 
-        // Share to LINE
-        function shareToLine() {
-            const r = ranks[currentRank];
-            const text = `人生ヤバさ診断\n私の結果は${currentRank}ランク「${r.title}」\n\nスコア: ${totalScore}点\n\nあなたも試してみて！`;
-            const url = window.location.href;
-            window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank');
+        /**
+         * 分析コメントを生成
+         * @returns {string} 分析テキスト
+         */
+        function generateAnalysis() {
+            const maxPerCategory = 30;
+            const issues = [];
+            const strengths = [];
+
+            // 各カテゴリを評価
+            const categories = [
+                { key: 'sleep', name: '睡眠習慣' },
+                { key: 'study', name: '学習管理' },
+                { key: 'phone', name: 'スマホ使用' },
+                { key: 'planning', name: '計画性' }
+            ];
+
+            categories.forEach(cat => {
+                const score = categoryScores[cat.key];
+                const normalizedScore = ((maxPerCategory - score) / maxPerCategory) * 100;
+
+                if (normalizedScore < 50) {
+                    issues.push(cat.name);
+                } else if (normalizedScore >= 75) {
+                    strengths.push(cat.name);
+                }
+            });
+
+            // 分析文を構築
+            let analysis = '';
+
+            if (issues.length > 0) {
+                analysis += `${issues.join('、')}に改善の余地があります。`;
+            }
+
+            if (strengths.length > 0) {
+                if (analysis) analysis += '一方、';
+                analysis += `${strengths.join('、')}は良好に管理されています。`;
+            }
+
+            if (!analysis) {
+                analysis = '全体的にバランスの取れた生活習慣です。現状を維持しながら、さらなる向上を目指しましょう。';
+            }
+
+            return analysis;
         }
 
-        // Restart Quiz
+        /**
+         * 改善提案を表示
+         */
+        function displaySuggestions() {
+            const list = document.getElementById('suggestionsList');
+            list.innerHTML = '';
+
+            const maxPerCategory = 30;
+            const allSuggestions = [];
+
+            // 各カテゴリのスコアに応じた提案を収集
+            Object.keys(categoryScores).forEach(category => {
+                const score = categoryScores[category];
+                const normalizedScore = ((maxPerCategory - score) / maxPerCategory) * 100;
+
+                let level;
+                if (normalizedScore < 50) level = 'high';
+                else if (normalizedScore < 75) level = 'medium';
+                else level = 'low';
+
+                const categorySuggestions = suggestions[category][level];
+                
+                // 重要度が高い順に追加（スコアが低いほど優先）
+                categorySuggestions.forEach((suggestion, index) => {
+                    allSuggestions.push({
+                        ...suggestion,
+                        priority: normalizedScore < 50 ? index : index + 10
+                    });
+                });
+            });
+
+            // 優先度順にソートし、上位5件を表示
+            allSuggestions
+                .sort((a, b) => a.priority - b.priority)
+                .slice(0, 5)
+                .forEach(suggestion => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <span class="suggestion-icon">${suggestion.icon}</span>
+                        <span class="suggestion-text">${suggestion.text}</span>
+                    `;
+                    list.appendChild(li);
+                });
+        }
+
+        /**
+         * 診断を再スタート
+         */
         function restartQuiz() {
             document.getElementById('resultScreen').classList.add('hidden');
             document.getElementById('startScreen').classList.remove('hidden');
             document.getElementById('startScreen').classList.add('fade-in');
-            currentRank = '';
-        }
 
-        document.getElementById('canvasPreview').addEventListener('click', (e) => {
-            if (e.target.id === 'canvasPreview') {
-                closeCanvasPreview();
-            }
-        });
+            // スコアをリセット
+            Object.keys(categoryScores).forEach(key => {
+                categoryScores[key] = 0;
+            });
+
+            // バーの幅をリセット
+            ['sleep', 'study', 'phone', 'planning'].forEach(cat => {
+                document.getElementById(`${cat}Bar`).style.width = '0%';
+            });
+        }
     </script>
 </body>
-
 </html>
