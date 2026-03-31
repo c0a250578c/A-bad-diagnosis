@@ -6,8 +6,8 @@ import type { Suggestions } from '../types';
  * 
  * スコア範囲（正規化後の0-100点）:
  * - high (80-100点): 良好
- * - medium (60-79点): 要注意
- * - low (0-59点): 改善が必要
+ * - medium (50-79点): 要注意
+ * - low (0-49点): 改善が必要
  */
 export const suggestions: Suggestions = {
   sleep: {

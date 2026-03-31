@@ -14,11 +14,11 @@ const CONSTANTS = {
 
 /**
  * スコアレベルの閾値
- * 80点以上：良好、60〜79点：要注意、59点以下：改善が必要
+ * 80-100点：良好、50-79点：要注意、0-49点：改善が必要
  */
 const SCORE_THRESHOLDS = {
   HIGH: 80,    // 良好
-  MEDIUM: 60,  // 要注意
+  MEDIUM: 50,  // 要注意
   LOW: 0       // 改善必要
 } as const;
 
@@ -50,12 +50,12 @@ export function calculateTotalScore(scores: CategoryScores): number {
 
 /**
  * 評価メッセージの定義
- * 80点以上：良好、60〜79点：要注意、59点以下：改善が必要
+ * 80-100点：良好、50-79点：要注意、0-49点：改善が必要
  */
 const EVALUATION_MESSAGES = {
   EXCELLENT: { threshold: 80, message: '生活習慣は非常に良好です 🌟' },
-  GOOD: { threshold: 60, message: '全体的に良好ですが、一部改善の余地があります 👍' },
-  NEEDS_IMPROVEMENT: { threshold: 0, message: '改善ポイントが見られます。意識的な見直しをお勧めします �' }
+  GOOD: { threshold: 50, message: '全体的に良好ですが、一部改善の余地があります 👍' },
+  NEEDS_IMPROVEMENT: { threshold: 0, message: '改善ポイントが見られます。意識的な見直しをお勧めします 📋' }
 } as const;
 
 /**

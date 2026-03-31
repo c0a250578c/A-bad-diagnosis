@@ -117,11 +117,11 @@ const ScoreLegend: React.FC = () => (
     </div>
     <div className="legend-item">
       <div className="legend-dot" style={{ background: '#f59e0b' }}></div>
-      <span>60-79点: 要注意</span>
+      <span>50-79点: 要注意</span>
     </div>
     <div className="legend-item">
       <div className="legend-dot" style={{ background: '#ef4444' }}></div>
-      <span>59点以下: 改善が必要</span>
+      <span>0-49点: 改善が必要</span>
     </div>
   </div>
 );
