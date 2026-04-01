@@ -12,7 +12,9 @@ const initialScores: CategoryScores = {
   sleep: 0,
   study: 0,
   phone: 0,
-  planning: 0
+  planning: 0,
+  health: 0,
+  social: 0
 };
 
 const QuizContext = createContext<QuizContextType | undefined>(undefined);
