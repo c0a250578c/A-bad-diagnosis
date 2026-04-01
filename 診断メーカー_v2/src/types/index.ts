@@ -32,7 +32,7 @@ export interface CategoryInfo {
  * 選択肢（オプション）の型
  */
 export interface Option {
-  /** スコア（低いほど良い） */
+  /** スコア（低い生スコアほど良い、表示時は正規化されて高いほど良い） */
   score: number;
   /** 表示テキスト */
   text: string;
@@ -102,11 +102,11 @@ export interface SuggestionItem {
  * カテゴリ別改善提案データの型
  */
 export interface CategorySuggestions {
-  /** スコア高（改善必要） */
+  /** スコア高（80-100点：良好） */
   high: SuggestionItem[];
-  /** スコア中（要注意） */
+  /** スコア中（50-79点：要注意） */
   medium: SuggestionItem[];
-  /** スコア低（良好） */
+  /** スコア低（0-49点：改善が必要） */
   low: SuggestionItem[];
 }
 
