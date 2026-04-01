@@ -31,5 +31,19 @@ export const categoryInfo: Record<Category, CategoryInfo> = {
     icon: '📅',
     color: '#10b981',
     bgColor: '#d1fae5'
+  },
+  health: {
+    key: 'health',
+    name: '運動・健康',
+    icon: '💪',
+    color: '#ef4444',
+    bgColor: '#fee2e2'
+  },
+  social: {
+    key: 'social',
+    name: '人間関係',
+    icon: '🤝',
+    color: '#ec4899',
+    bgColor: '#fce7f3'
   }
 };
