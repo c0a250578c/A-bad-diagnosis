@@ -9,9 +9,9 @@
 
 /**
  * カテゴリの型定義
- * 4つの生活習慣カテゴリを表す
+ * 6つの生活習慣カテゴリを表す
  */
-export type Category = 'sleep' | 'study' | 'phone' | 'planning';
+export type Category = 'sleep' | 'study' | 'phone' | 'planning' | 'health' | 'social';
 
 /**
  * カテゴリ情報の型
