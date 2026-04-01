@@ -8,6 +8,7 @@
 - **TypeScript** - 型安全な開発
 - **Vite** - 高速ビルドツール
 - **Vitest** - ユニットテスト
+- **Playwright** - E2Eテスト
 - **Recharts** - グラフ可視化
 - **Vercel** - デプロイ・ホスティング
 
@@ -23,8 +24,14 @@ npm run dev
 # 型チェック
 npm run type-check
 
-# テスト実行
+# テスト実行（Vitest - 単体テスト）
 npm test
+
+# E2Eテスト実行（Playwright）
+npm run test:e2e
+
+# E2Eテスト実行（UIモードで確認）
+npm run test:e2e:ui
 
 # ビルド
 npm run build
@@ -95,22 +102,24 @@ src/
 
 ## スコア評価基準
 
-| スコア | 評価 | 色 |
-|--------|------|-----|
-| 80-100点 | 良好 🌟 | 🟢 緑 |
-| 50-79点 | 要注意 ⚠️ | 🟡 黄 |
-| 0-49点 | 改善が必要 📋 | 🔴 赤 |
+| スコア   | 評価          | 色    |
+| -------- | ------------- | ----- |
+| 80-100点 | 良好 🌟       | 🟢 緑 |
+| 50-79点  | 要注意 ⚠️     | 🟡 黄 |
+| 0-49点   | 改善が必要 📋 | 🔴 赤 |
 
 ## スクリプト一覧
 
-| コマンド | 説明 |
-|---------|------|
-| `npm run dev` | 開発サーバー起動 |
-| `npm run build` | 本番用ビルド |
-| `npm run type-check` | TypeScript型チェック |
-| `npm test` | テスト実行（ウォッチモード） |
-| `npm run test:run` | テスト実行（1回のみ） |
-| `npm run lint` | ESLint実行 |
+| コマンド              | 説明                         |
+| --------------------- | ---------------------------- |
+| `npm run dev`         | 開発サーバー起動             |
+| `npm run build`       | 本番用ビルド                 |
+| `npm run type-check`  | TypeScript型チェック         |
+| `npm test`            | 単体テスト（ウォッチモード） |
+| `npm run test:run`    | 単体テスト（1回のみ）        |
+| `npm run test:e2e`    | E2Eテスト実行                |
+| `npm run test:e2e:ui` | E2Eテスト（UIモード）        |
+| `npm run lint`        | ESLint実行                   |
 
 ## ライセンス
 
