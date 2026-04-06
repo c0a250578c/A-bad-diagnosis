@@ -65,7 +65,7 @@ export const suggestions: Suggestions = {
       { icon: '🎯', text: '短期目標と長期目標を設定し、具体的なアクションプランを立てましょう' },
       { icon: '📅', text: '週の初めにスケジュールを確認し、予定を調整しましょう' }
     ]
-  }
+  },
   health: {
     high: [
       { icon: '✅', text: '運動・健康習慣は良好です。継続して健康を維持しましょう' }

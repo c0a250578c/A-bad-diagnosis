@@ -15,7 +15,7 @@ export const App: React.FC = () => {
     <div className="container">
       <header className="app-header">
         <h1>📊 学生生活習慣チェック</h1>
-        <p>4つのカテゴリで生活習慣を分析し、改善ポイントを提案します</p>
+        <p>6つのカテゴリで生活習慣を分析し、改善ポイントを提案します</p>
       </header>
 
       {currentScreen === 'start' && <StartScreen />}

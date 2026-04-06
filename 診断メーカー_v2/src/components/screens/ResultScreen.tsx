@@ -7,6 +7,7 @@ import { categoryInfo } from '../../data/categoryInfo';
 import { ScoreRadarChart, ScoreHistoryChart } from '../charts/ScoreCharts';
 import { HistorySummary } from '../history/HistoryComponents';
 import type { QuizHistoryItem, Category } from '../../types';
+import { AIAdvisor } from '../AIAdvisor';
 
 interface ScoreBarProps {
   score: number;
@@ -156,6 +157,9 @@ export const ResultScreen: React.FC = () => {
         <div className="total-score-label">総合スコア / 100点</div>
         <div className="result-message">{message}</div>
       </div>
+
+      {/* AIアドバイザーによる特別分析 */}
+      <AIAdvisor scores={categoryScores} totalScore={totalScore} />
 
       {/* カテゴリ別スコア */}
       <div className="card category-scores">

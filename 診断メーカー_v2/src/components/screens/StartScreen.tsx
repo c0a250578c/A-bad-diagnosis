@@ -39,7 +39,9 @@ export const StartScreen: React.FC = () => {
     { icon: '😴', label: '睡眠習慣' },
     { icon: '📚', label: '学習管理' },
     { icon: '📱', label: 'スマホ使用' },
-    { icon: '📅', label: '計画性' }
+    { icon: '📅', label: '計画性' },
+    { icon: '💪', label: '運動・健康' },
+    { icon: '🤝', label: '人間関係' }
   ];
 
   return (
@@ -48,7 +50,7 @@ export const StartScreen: React.FC = () => {
         <div className="intro">
           <p>
             このアプリでは、学生の日常生活習慣を<br />
-            「睡眠」「勉強」「スマホ使用」「計画性」の4カテゴリで評価します。
+            「睡眠」「勉強」「スマホ使用」「計画性」「運動・健康」「人間関係」の6カテゴリで評価します。
           </p>
         </div>
 
