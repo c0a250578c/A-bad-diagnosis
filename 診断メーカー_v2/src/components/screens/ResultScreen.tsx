@@ -75,12 +75,15 @@ interface CategoryScoreItemProps {
   index: number;
 }
 
+import { questions } from '../../data/questions';
+
 /**
  * カテゴリ別スコア表示コンポーネント
  */
 const CategoryScoreItem: React.FC<CategoryScoreItemProps> = ({ category, rawScore, index }) => {
   const info = categoryInfo[category];
-  const displayScore = Math.max(0, normalizeScore(rawScore));
+  const questionCount = questions.filter(q => q.category === category).length;
+  const displayScore = Math.max(0, normalizeScore(rawScore, questionCount));
 
   return (
     <div className="category-item">

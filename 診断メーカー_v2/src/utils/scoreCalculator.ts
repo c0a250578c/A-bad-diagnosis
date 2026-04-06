@@ -6,10 +6,6 @@ import { categoryInfo } from '../data/categoryInfo';
  */
 const CONSTANTS = {
   MAX_SCORE_PER_QUESTION: 15,
-  QUESTIONS_PER_CATEGORY: 2,
-  get MAX_SCORE_PER_CATEGORY() {
-    return this.MAX_SCORE_PER_QUESTION * this.QUESTIONS_PER_CATEGORY;
-  }
 } as const;
 
 /**
@@ -24,25 +20,31 @@ const SCORE_THRESHOLDS = {
 
 /**
  * カテゴリスコアを正規化（0-100）
+ * カテゴリごとの質問数に応じて最大値を算出して計算
  * @param rawScore - 生スコア（低いほど良い）
+ * @param questionCount - そのカテゴリの質問数（デフォルト4）
  * @returns 正規化スコア（高いほど良い）
  */
-export function normalizeScore(rawScore: number): number {
+export function normalizeScore(rawScore: number, questionCount: number = 4): number {
+  const maxScore = questionCount * CONSTANTS.MAX_SCORE_PER_QUESTION;
   return Math.round(
-    ((CONSTANTS.MAX_SCORE_PER_CATEGORY - rawScore) / CONSTANTS.MAX_SCORE_PER_CATEGORY) * 100
+    ((maxScore - rawScore) / maxScore) * 100
   );
 }
 
+import { questions } from '../data/questions';
+
 /**
  * 総合スコアを計算
+ * 質問データ全体の最大スコアに基づいて正規化
  * @param scores - カテゴリ別スコア
  * @returns 0-100の正規化スコア
  */
 export function calculateTotalScore(scores: CategoryScores): number {
-  const categoryCount = Object.keys(scores).length;
-  const totalRawScore = Object.values(scores).reduce((sum, score) => sum + score, 0);
+  // 質問データから合計最大スコアを算出
+  const maxTotal = questions.length * CONSTANTS.MAX_SCORE_PER_QUESTION;
   
-  const maxTotal = categoryCount * CONSTANTS.MAX_SCORE_PER_CATEGORY;
+  const totalRawScore = Object.values(scores).reduce((sum, score) => sum + score, 0);
   const normalizedScore = Math.round(((maxTotal - totalRawScore) / maxTotal) * 100);
   
   return Math.max(0, normalizedScore);

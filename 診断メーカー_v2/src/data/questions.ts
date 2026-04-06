@@ -272,9 +272,22 @@ export const questions: Question[] = [
       { score: 15, text: 'あまり水分を摂らない' }
     ]
   },
+  {
+    id: 'health_4',
+    category: 'health',
+    categoryName: '運動・健康',
+    categoryClass: 'category-health',
+    text: '心身の疲れを感じた際、適切にリフレッシュできていますか？',
+    options: [
+      { score: 0, text: '自分なりの解消法がある' },
+      { score: 5, text: 'ある程度できている' },
+      { score: 10, text: '疲れが溜まりやすい' },
+      { score: 15, text: '解消できずストレスが多い' }
+    ]
+  },
 
   // ========================================
-  // 人間関係カテゴリ（3問）- 新規追加
+  // 人間関係カテゴリ（4問）- 新規追加
   // ========================================
   {
     id: 'social_1',
@@ -313,6 +326,19 @@ export const questions: Question[] = [
       { score: 5, text: '話しかけられたら快く応対する' },
       { score: 10, text: '必要最小限のやり取りにとどめる' },
       { score: 15, text: '人と話すことに疲れやすい' }
+    ]
+  },
+  {
+    id: 'social_4',
+    category: 'social',
+    categoryName: '人間関係',
+    categoryClass: 'category-social',
+    text: 'グループワークや集団行動での協力は？',
+    options: [
+      { score: 0, text: '円滑に協力できる' },
+      { score: 5, text: '特に苦ではない' },
+      { score: 10, text: '少し負担を感じる' },
+      { score: 15, text: '非常に苦痛、または避けたい' }
     ]
   }
 ];
