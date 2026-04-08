@@ -22,11 +22,12 @@ const SCORE_THRESHOLDS = {
  * カテゴリスコアを正規化（0-100）
  * カテゴリごとの質問数に応じて最大値を算出して計算
  * @param rawScore - 生スコア（低いほど良い）
- * @param questionCount - そのカテゴリの質問数（デフォルト4）
+ * @param questionCount - そのカテゴリの質問数
  * @returns 正規化スコア（高いほど良い）
  */
-export function normalizeScore(rawScore: number, questionCount: number = 4): number {
+export function normalizeScore(rawScore: number, questionCount: number): number {
   const maxScore = questionCount * CONSTANTS.MAX_SCORE_PER_QUESTION;
+  if (maxScore === 0) return 0;
   return Math.round(
     ((maxScore - rawScore) / maxScore) * 100
   );
@@ -43,6 +44,8 @@ import { questions } from '../data/questions';
 export function calculateTotalScore(scores: CategoryScores): number {
   // 質問データから合計最大スコアを算出
   const maxTotal = questions.length * CONSTANTS.MAX_SCORE_PER_QUESTION;
+  
+  if (maxTotal === 0) return 0;
   
   const totalRawScore = Object.values(scores).reduce((sum, score) => sum + score, 0);
   const normalizedScore = Math.round(((maxTotal - totalRawScore) / maxTotal) * 100);
@@ -85,12 +88,23 @@ export function getCategoryName(category: Category): string {
 }
 
 /**
+ * カテゴリあたりの質問数を取得
+ * @param category - カテゴリキー
+ * @returns 質問数
+ */
+export function getQuestionCountByCategory(category: Category): number {
+  return questions.filter(q => q.category === category).length;
+}
+
+/**
  * スコアレベルを判定
  * @param score - カテゴリスコア（生スコア）
+ * @param category - カテゴリ
  * @returns スコアレベル
  */
-export function getScoreLevel(score: number): 'high' | 'medium' | 'low' {
-  const normalizedScore = normalizeScore(score);
+export function getScoreLevel(score: number, category: Category): 'high' | 'medium' | 'low' {
+  const count = getQuestionCountByCategory(category);
+  const normalizedScore = normalizeScore(score, count);
   
   if (normalizedScore >= SCORE_THRESHOLDS.HIGH) return 'high';
   if (normalizedScore >= SCORE_THRESHOLDS.MEDIUM) return 'medium';
@@ -113,7 +127,8 @@ function analyzeCategories(scores: CategoryScores): CategoryAnalysis {
 
   (Object.keys(scores) as Category[]).forEach((category) => {
     const score = scores[category];
-    const normalizedScore = normalizeScore(score);
+    const count = getQuestionCountByCategory(category);
+    const normalizedScore = normalizeScore(score, count);
     const categoryName = getCategoryName(category);
 
     if (normalizedScore < SCORE_THRESHOLDS.MEDIUM) {

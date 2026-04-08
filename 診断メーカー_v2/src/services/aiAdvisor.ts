@@ -6,6 +6,8 @@ const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const MODEL = 'gemini-1.5-flash';
 const ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`;
 
+import { questions } from '../data/questions';
+
 /**
  * 診断結果に基づいたAIアドバイスを生成
  */
@@ -13,7 +15,8 @@ export async function generateAIAdvice(scores: CategoryScores, totalScore: numbe
   const categoriesList = Object.entries(scores)
     .map(([key, score]) => {
       const info = categoryInfo[key as keyof typeof categoryInfo];
-      return `- ${info.name}: ${normalizeScore(score)}点`;
+      const count = questions.filter(q => q.category === key).length;
+      return `- ${info.name}: ${normalizeScore(score, count)}点`;
     })
     .join('\n');
 

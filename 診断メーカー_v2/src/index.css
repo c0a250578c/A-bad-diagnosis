@@ -570,20 +570,75 @@ body {
   font-size: 0.875rem;
 }
 
+/* ============================================
+   AIアドバイザー (拡張スタイル)
+   ============================================ */
+.card-title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ai-badge {
+  background: linear-gradient(135deg, #2563eb, #6366f1);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+}
+
+.ai-h3 {
+  font-size: 1.15rem;
+  color: var(--primary);
+  margin: 16px 0 8px;
+  border-bottom: 2px solid #e0f2fe;
+  padding-bottom: 4px;
+}
+
+.ai-h4 {
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin: 12px 0 6px;
+  font-weight: 700;
+}
+
+.ai-p {
+  margin-bottom: 12px;
+  color: var(--text-primary);
+  line-height: 1.7;
+}
+
+.ai-li {
+  margin-left: 1.25rem;
+  margin-bottom: 6px;
+  position: relative;
+  list-style-type: none;
+}
+
+.ai-li::before {
+  content: "•";
+  color: var(--primary);
+  font-weight: bold;
+  position: absolute;
+  left: -1.25rem;
+}
+
+.ai-error-hint {
+  margin-top: 8px;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
 @media (max-width: 640px) {
-  .container {
-    padding: 16px 12px;
-  }
-
-  .app-header h1 {
-    font-size: 1.5rem;
-  }
-
-  .feature-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .total-score {
-    font-size: 2.5rem;
+  .card-title-container {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
