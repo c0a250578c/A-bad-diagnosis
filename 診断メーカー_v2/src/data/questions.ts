@@ -7,7 +7,7 @@ import type { Question } from '../types';
  */
 export const questions: Question[] = [
   // ========================================
-  // 睡眠習慣カテゴリ（7問）
+  // 睡眠習慣カテゴリ（4問）
   // ========================================
   {
     id: 'sleep_1',
@@ -61,48 +61,9 @@ export const questions: Question[] = [
       { score: 15, text: '2時間以上、または夜に影響する' }
     ]
   },
-  {
-    id: 'sleep_5',
-    category: 'sleep',
-    categoryName: '睡眠習慣',
-    categoryClass: 'category-sleep',
-    text: '寝る前のルーティン（読書や入浴など）は？',
-    options: [
-      { score: 0, text: '決まった習慣があり、リラックスできている' },
-      { score: 5, text: '意識しているが時々忘れる' },
-      { score: 10, text: '特に決まっていない' },
-      { score: 15, text: '寝る直前まで刺激的なことをしている' }
-    ]
-  },
-  {
-    id: 'sleep_6',
-    category: 'sleep',
-    categoryName: '睡眠習慣',
-    categoryClass: 'category-sleep',
-    text: '休日と平日の睡眠時間の差は？',
-    options: [
-      { score: 0, text: '1時間以内（ほぼ同じ）' },
-      { score: 5, text: '2時間程度' },
-      { score: 10, text: '3時間以上（寝溜めする）' },
-      { score: 15, text: '不規則でバラバラ' }
-    ]
-  },
-  {
-    id: 'sleep_7',
-    category: 'sleep',
-    categoryName: '睡眠習慣',
-    categoryClass: 'category-sleep',
-    text: '朝起きた時の太陽光の摂取は？',
-    options: [
-      { score: 0, text: '起きてすぐに浴びるようにしている' },
-      { score: 5, text: '外出時に浴びる' },
-      { score: 10, text: 'カーテンを閉め切っていることが多い' },
-      { score: 15, text: '昼まで暗い部屋で過ごす' }
-    ]
-  },
 
   // ========================================
-  // 学習管理カテゴリ（7問）
+  // 学習管理カテゴリ（4問）
   // ========================================
   {
     id: 'study_1',
@@ -156,48 +117,9 @@ export const questions: Question[] = [
       { score: 15, text: 'ほとんど行わない' }
     ]
   },
-  {
-    id: 'study_5',
-    category: 'study',
-    categoryName: '学習管理',
-    categoryClass: 'category-study',
-    text: '学習環境の整備（デスク回りの整理など）は？',
-    options: [
-      { score: 0, text: '常に整理されており、集中しやすい' },
-      { score: 5, text: '定期的に整理している' },
-      { score: 10, text: '物が散らかっていることが多い' },
-      { score: 15, text: '学習するための場所が確保できていない' }
-    ]
-  },
-  {
-    id: 'study_6',
-    category: 'study',
-    categoryName: '学習管理',
-    categoryClass: 'category-study',
-    text: '適切な休憩の取り方は？',
-    options: [
-      { score: 0, text: 'ポモドーロテクニック等で計画的に休む' },
-      { score: 5, text: '疲れたら適宜休む' },
-      { score: 10, text: '休憩なしで長時間やろうとする' },
-      { score: 15, text: '休憩の方が長くなってしまう' }
-    ]
-  },
-  {
-    id: 'study_7',
-    category: 'study',
-    categoryName: '学習管理',
-    categoryClass: 'category-study',
-    text: 'わからないことがあった時の対応は？',
-    options: [
-      { score: 0, text: 'すぐに調べたり質問したりして解決する' },
-      { score: 5, text: '後でまとめて調べる' },
-      { score: 10, text: '解決を先延ばしにする' },
-      { score: 15, text: 'わからないまま放置する' }
-    ]
-  },
 
   // ========================================
-  // スマホ使用カテゴリ（7問）
+  // スマホ使用カテゴリ（4問）
   // ========================================
   {
     id: 'phone_1',
@@ -251,48 +173,9 @@ export const questions: Question[] = [
       { score: 15, text: '4時間以上' }
     ]
   },
-  {
-    id: 'phone_5',
-    category: 'phone',
-    categoryName: 'スマホ使用',
-    categoryClass: 'category-phone',
-    text: 'スマホの通知設定は？',
-    options: [
-      { score: 0, text: '必要なもの以外オフ、または集中モード活用' },
-      { score: 5, text: '重要度の低いものはオフにしている' },
-      { score: 10, text: 'デフォルトのままですべて届く' },
-      { score: 15, text: '通知が来るとすぐに見てしまう' }
-    ]
-  },
-  {
-    id: 'phone_6',
-    category: 'phone',
-    categoryName: 'スマホ使用',
-    categoryClass: 'category-phone',
-    text: '食事中のスマホ使用は？',
-    options: [
-      { score: 0, text: '全く使わない' },
-      { score: 5, text: '時々確認する程度' },
-      { score: 10, text: '動画やSNSを見ながら食べる' },
-      { score: 15, text: 'スマホがないと食事が進まない' }
-    ]
-  },
-  {
-    id: 'phone_7',
-    category: 'phone',
-    categoryName: 'スマホ使用',
-    categoryClass: 'category-phone',
-    text: '歩きスマホ、あるいは移動中の使用は？',
-    options: [
-      { score: 0, text: '絶対にしない' },
-      { score: 5, text: '立ち止まって使う' },
-      { score: 10, text: '時々やってしまう' },
-      { score: 15, text: '常に操作しながら移動している' }
-    ]
-  },
 
   // ========================================
-  // 計画性カテゴリ（7問）
+  // 計画性カテゴリ（4問）
   // ========================================
   {
     id: 'planning_1',
@@ -346,48 +229,9 @@ export const questions: Question[] = [
       { score: 15, text: 'ほとんど行わない' }
     ]
   },
-  {
-    id: 'planning_5',
-    category: 'planning',
-    categoryName: '計画性',
-    categoryClass: 'category-planning',
-    text: 'ToDoリストの活用は？',
-    options: [
-      { score: 0, text: '毎朝または前夜に作成している' },
-      { score: 5, text: '時々書き出す' },
-      { score: 10, text: '気が向いた時だけ書く' },
-      { score: 15, text: '使ったことがない' }
-    ]
-  },
-  {
-    id: 'planning_6',
-    category: 'planning',
-    categoryName: '計画性',
-    categoryClass: 'category-planning',
-    text: '優先順位の付け方は？',
-    options: [
-      { score: 0, text: '重要度と緊急度で明確に分けている' },
-      { score: 5, text: 'なんとなく意識している' },
-      { score: 10, text: '締め切り順に進めるだけ' },
-      { score: 15, text: '思いついたものから手をつける' }
-    ]
-  },
-  {
-    id: 'planning_7',
-    category: 'planning',
-    categoryName: '計画性',
-    categoryClass: 'category-planning',
-    text: '忘れ物や落とし物の頻度は？',
-    options: [
-      { score: 0, text: 'ほとんどない' },
-      { score: 5, text: '数ヶ月に一度程度' },
-      { score: 10, text: '月に数回ある' },
-      { score: 15, text: 'よく忘れる・失くす' }
-    ]
-  },
 
   // ========================================
-  // 運動・健康カテゴリ（7問）
+  // 運動・健康カテゴリ（4問）
   // ========================================
   {
     id: 'health_1',
@@ -441,48 +285,9 @@ export const questions: Question[] = [
       { score: 15, text: '解消できずストレスが多い' }
     ]
   },
-  {
-    id: 'health_5',
-    category: 'health',
-    categoryName: '運動・健康',
-    categoryClass: 'category-health',
-    text: '階段利用や歩行などの日常的な運動意識は？',
-    options: [
-      { score: 0, text: '積極的に階段を使い、よく歩く' },
-      { score: 5, text: '意識して少し多めに歩く' },
-      { score: 10, text: 'エスカレーターや乗り物を優先する' },
-      { score: 15, text: '極力動かないようにしている' }
-    ]
-  },
-  {
-    id: 'health_6',
-    category: 'health',
-    categoryName: '運動・健康',
-    categoryClass: 'category-health',
-    text: '姿勢（猫背になっていないか等）への意識は？',
-    options: [
-      { score: 0, text: '常に良い姿勢を維持している' },
-      { score: 5, text: '気づいた時に正すようにしている' },
-      { score: 10, text: 'ほとんど意識していない' },
-      { score: 15, text: 'かなり姿勢が悪い自覚がある' }
-    ]
-  },
-  {
-    id: 'health_7',
-    category: 'health',
-    categoryName: '運動・健康',
-    categoryClass: 'category-health',
-    text: '手洗い・うがい等の基本的な衛生管理は？',
-    options: [
-      { score: 0, text: '外出後や食事前に必ず徹底している' },
-      { score: 5, text: '基本的にはしている' },
-      { score: 10, text: '気が向いた時だけする' },
-      { score: 15, text: 'ほとんどしない' }
-    ]
-  },
 
   // ========================================
-  // 人間関係カテゴリ（7問）
+  // 人間関係カテゴリ（4問）
   // ========================================
   {
     id: 'social_1',
@@ -535,45 +340,7 @@ export const questions: Question[] = [
       { score: 10, text: '少し負担を感じる' },
       { score: 15, text: '非常に苦痛、または避けたい' }
     ]
-  },
-  {
-    id: 'social_5',
-    category: 'social',
-    categoryName: '人間関係',
-    categoryClass: 'category-social',
-    text: '感謝や謝罪を素直に伝えられますか？',
-    options: [
-      { score: 0, text: 'すぐに言葉にして伝えられる' },
-      { score: 5, text: '少し時間がかかるが伝えられる' },
-      { score: 10, text: '伝えるのが少し照れくさい・苦手' },
-      { score: 15, text: 'あまり口に出さない' }
-    ]
-  },
-  {
-    id: 'social_6',
-    category: 'social',
-    categoryName: '人間関係',
-    categoryClass: 'category-social',
-    text: '他人の意見を尊重できていますか？',
-    options: [
-      { score: 0, text: '自分と違ってもまずは受け入れる' },
-      { score: 5, text: 'ある程度は聞くようにしている' },
-      { score: 10, text: '自分の意見を優先しがち' },
-      { score: 15, text: '他人の意見にあまり関心がない' }
-    ]
-  },
-  {
-    id: 'social_7',
-    category: 'social',
-    categoryName: '人間関係',
-    categoryClass: 'category-social',
-    text: 'SNS上での誹謗中傷やネガティブな発信は？',
-    options: [
-      { score: 0, text: '全くしない、ポジティブな発信を心がけている' },
-      { score: 5, text: 'しないように気をつけている' },
-      { score: 10, text: 'たまに愚痴を書いてしまう' },
-      { score: 15, text: 'よく批判的な書き込みをする' }
-    ]
   }
 ];
+
 
