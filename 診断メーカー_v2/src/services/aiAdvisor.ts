@@ -11,7 +11,8 @@ import { questions } from '../data/questions';
  */
 export async function generateAIAdvice(scores: CategoryScores, totalScore: number): Promise<string> {
   const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-  const ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`;
+  // v1beta から v1 に変更して安定性を向上
+  const ENDPOINT = `https://generativelanguage.googleapis.com/v1/models/${MODEL}:generateContent?key=${API_KEY}`;
 
   console.log('Using API Key (first 5 chars):', API_KEY?.substring(0, 5));
 
