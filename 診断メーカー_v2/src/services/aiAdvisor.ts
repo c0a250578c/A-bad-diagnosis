@@ -2,9 +2,7 @@ import type { CategoryScores } from '../types';
 import { categoryInfo } from '../data/categoryInfo';
 import { normalizeScore } from '../utils/scoreCalculator';
 
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const MODEL = 'gemini-1.5-flash';
-const ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`;
 
 import { questions } from '../data/questions';
 
@@ -12,6 +10,15 @@ import { questions } from '../data/questions';
  * 診断結果に基づいたAIアドバイスを生成
  */
 export async function generateAIAdvice(scores: CategoryScores, totalScore: number): Promise<string> {
+  const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+  const ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`;
+
+  console.log('Using API Key (first 5 chars):', API_KEY?.substring(0, 5));
+
+  if (!API_KEY || API_KEY === 'YOUR_GEMINI_API_KEY') {
+    throw new Error('APIキーが設定されていません。');
+  }
+
   const categoriesList = Object.entries(scores)
     .map(([key, score]) => {
       const info = categoryInfo[key as keyof typeof categoryInfo];
@@ -45,24 +52,19 @@ ${categoriesList}
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: {
-          temperature: 0.7,
-          topK: 40,
-          topP: 0.95,
-          maxOutputTokens: 800,
-        },
       }),
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error?.message || 'AIとの通信に失敗しました');
+      const errorData = await response.json().catch(() => ({}));
+      console.error('Gemini API Error Response:', errorData);
+      throw new Error(errorData.error?.message || `APIエラー (Status: ${response.status})`);
     }
 
     const data = await response.json();
     return data.candidates[0].content.parts[0].text;
   } catch (error) {
-    console.error('Gemini API Error:', error);
+    console.error('Detailed fetch error:', error);
     throw error;
   }
 }
