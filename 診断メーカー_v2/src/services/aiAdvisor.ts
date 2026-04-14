@@ -2,7 +2,7 @@ import type { CategoryScores } from '../types';
 import { categoryInfo } from '../data/categoryInfo';
 import { normalizeScore } from '../utils/scoreCalculator';
 
-const MODEL = 'gemini-2.0-flash';
+const MODEL = 'gemini-2.5-flash';
 
 import { questions } from '../data/questions';
 
@@ -15,8 +15,8 @@ export async function generateAIAdvice(
   mode: 'kind' | 'sarcastic' = 'kind'
 ): Promise<string> {
   const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-  // v1beta から v1 に変更して安定性を向上
-  const ENDPOINT = `https://generativelanguage.googleapis.com/v1/models/${MODEL}:generateContent?key=${API_KEY}`;
+  // 無料枠の制限が安定している v1beta エンドポイントを使用
+  const ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`;
 
   console.log('Using API Key (first 5 chars):', API_KEY?.substring(0, 5));
 
