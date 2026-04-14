@@ -20,10 +20,12 @@ export function generateSuggestions(scores: CategoryScores): SuggestionItem[] {
     const level = getScoreLevel(score, category);
     const categorySuggestions = suggestions[category][level];
     
+    const priorityBase = level === 'low' ? 0 : level === 'medium' ? 10 : 20;
+
     categorySuggestions.forEach((suggestion, index) => {
       allSuggestions.push({
         ...suggestion,
-        priority: level === 'high' ? index : index + 10,
+        priority: priorityBase + index,
         category
       });
     });

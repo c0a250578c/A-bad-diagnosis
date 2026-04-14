@@ -4,6 +4,7 @@ import type { CategoryScores, Screen, QuizState, Category } from '../types';
 interface QuizContextType extends QuizState {
   startQuiz: () => void;
   answerQuestion: (score: number, category: Category) => void;
+  finishLoading: () => void;
   restartQuiz: () => void;
   totalQuestions: number;
 }
@@ -46,11 +47,15 @@ export const QuizProvider: React.FC<{ children: React.ReactNode; totalQuestions:
     setCurrentQuestionIndex(prev => {
       const next = prev + 1;
       if (next >= totalQuestions) {
-        setCurrentScreen('result');
+        setCurrentScreen('loading');
       }
       return next;
     });
   }, [totalQuestions]);
+
+  const finishLoading = useCallback(() => {
+    setCurrentScreen('result');
+  }, []);
 
   const restartQuiz = useCallback(() => {
     setCurrentScreen('start');
@@ -66,6 +71,7 @@ export const QuizProvider: React.FC<{ children: React.ReactNode; totalQuestions:
     answers,
     startQuiz,
     answerQuestion,
+    finishLoading,
     restartQuiz,
     totalQuestions
   };

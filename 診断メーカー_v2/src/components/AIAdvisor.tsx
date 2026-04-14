@@ -36,8 +36,8 @@ export const AIAdvisor: React.FC<AIAdvisorProps> = ({ scores, totalScore }) => {
         const result = await generateAIAdvice(scores, totalScore, mode);
         setAdviceMap(prev => ({ ...prev, [mode]: result }));
         setError(null);
-      } catch (err) {
-        setError('AIアドバイスの取得に失敗しました。APIキーの有効性を確認するか、時間をおいて再度お試しください。');
+      } catch (err: any) {
+        setError(`AIアドバイスの取得に失敗しました: ${err.message}`);
         console.error(err);
       } finally {
         setLoading(false);

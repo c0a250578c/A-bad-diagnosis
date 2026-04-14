@@ -4,12 +4,14 @@ import { StartScreen } from './components/screens/StartScreen';
 import { QuizScreen } from './components/screens/QuizScreen';
 import { ResultScreen } from './components/screens/ResultScreen';
 
+import { LoadingScreen } from './components/screens/LoadingScreen';
+
 /**
  * メインアプリケーションコンポーネント
  * 現在の画面状態に応じて適切な画面をレンダリング
  */
 export const App: React.FC = () => {
-  const { currentScreen } = useQuiz();
+  const { currentScreen, finishLoading } = useQuiz();
 
   return (
     <div className="container">
@@ -20,6 +22,7 @@ export const App: React.FC = () => {
 
       {currentScreen === 'start' && <StartScreen />}
       {currentScreen === 'quiz' && <QuizScreen />}
+      {currentScreen === 'loading' && <LoadingScreen onComplete={finishLoading} />}
       {currentScreen === 'result' && <ResultScreen />}
     </div>
   );

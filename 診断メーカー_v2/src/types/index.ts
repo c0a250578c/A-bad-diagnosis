@@ -68,7 +68,7 @@ export type CategoryScores = Record<Category, number>;
 /**
  * 画面状態の型
  */
-export type Screen = 'start' | 'quiz' | 'result';
+export type Screen = 'start' | 'quiz' | 'loading' | 'result';
 
 /**
  * クイズ状態の型

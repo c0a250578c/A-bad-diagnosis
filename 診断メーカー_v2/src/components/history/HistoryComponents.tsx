@@ -46,7 +46,7 @@ export const HistoryList: React.FC<HistoryListProps> = ({ history, onSelect }) =
         >
           <div className="history-header">
             <span className="history-date">{formatDate(item.date)}</span>
-            <span className={`history-score score-${item.totalScore >= 80 ? 'high' : item.totalScore >= 60 ? 'medium' : 'low'}`}>
+            <span className={`history-score score-${item.totalScore >= 80 ? 'high' : item.totalScore >= 50 ? 'medium' : 'low'}`}>
               {item.totalScore}点
             </span>
           </div>

@@ -64,7 +64,11 @@ export const StartScreen: React.FC = () => {
           ))}
         </div>
 
-        <button className="btn btn-primary" onClick={startQuiz}>
+        <button 
+          className="btn btn-primary" 
+          onClick={startQuiz}
+          aria-label="診断を開始する"
+        >
           診断を始める →
         </button>
 
@@ -74,6 +78,8 @@ export const StartScreen: React.FC = () => {
             <button 
               className="btn btn-text"
               onClick={() => setShowHistory(!showHistory)}
+              aria-expanded={showHistory}
+              aria-label={showHistory ? '履歴を非表示にする' : '履歴を表示する'}
             >
               {showHistory ? '▼ 履歴を隠す' : '▶ 過去の診断結果を見る'}
             </button>

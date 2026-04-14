@@ -15,7 +15,14 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ current, total }) => {
   const progress = (current / total) * 100;
   
   return (
-    <div className="progress-bar">
+    <div 
+      className="progress-bar" 
+      role="progressbar" 
+      aria-valuenow={Math.round(progress)} 
+      aria-valuemin={0} 
+      aria-valuemax={100}
+      aria-label={`進捗: ${current} / ${total}`}
+    >
       <div 
         className="progress-fill" 
         style={{ width: `${progress}%` }}
@@ -46,6 +53,7 @@ const OptionButton: React.FC<OptionButtonProps> = ({ text, onClick, index }) => 
     <button
       className={`option-btn ${isVisible ? 'visible' : ''}`}
       onClick={onClick}
+      aria-label={`${text}を選択`}
       style={{
         opacity: isVisible ? 1 : 0,
         transform: isVisible ? 'translateY(0)' : 'translateY(10px)',
@@ -77,7 +85,7 @@ export const QuizScreen: React.FC = () => {
           <h2 className="question-text">{question.text}</h2>
         </div>
 
-        <div className="options">
+        <div className="options" role="radiogroup" aria-label="選択肢">
           {question.options.map((option, index) => (
             <OptionButton
               key={index}
