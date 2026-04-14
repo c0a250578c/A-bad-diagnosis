@@ -11,24 +11,30 @@ interface AIAdvisorProps {
  * AIアドバイザーによる分析を表示するコンポーネント
  */
 export const AIAdvisor: React.FC<AIAdvisorProps> = ({ scores, totalScore }) => {
-  const [advice, setAdvice] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [mode, setMode] = useState<'kind' | 'sarcastic'>('kind');
+  const [adviceMap, setAdviceMap] = useState<Record<'kind' | 'sarcastic', string | null>>({
+    kind: null,
+    sarcastic: null
+  });
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchAdvice() {
+      // 既に取得済みの場合はスキップ
+      if (adviceMap[mode]) return;
+
       // APIキーの簡易チェック
       const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
       if (!apiKey || apiKey === 'YOUR_GEMINI_API_KEY' || apiKey.length < 10) {
         setError('Gemini APIキーが設定されていないか、正しくありません。.envファイルを確認してください。');
-        setLoading(false);
         return;
       }
 
       try {
         setLoading(true);
-        const result = await generateAIAdvice(scores, totalScore);
-        setAdvice(result);
+        const result = await generateAIAdvice(scores, totalScore, mode);
+        setAdviceMap(prev => ({ ...prev, [mode]: result }));
         setError(null);
       } catch (err) {
         setError('AIアドバイスの取得に失敗しました。APIキーの有効性を確認するか、時間をおいて再度お試しください。');
@@ -39,21 +45,43 @@ export const AIAdvisor: React.FC<AIAdvisorProps> = ({ scores, totalScore }) => {
     }
 
     fetchAdvice();
-  }, [scores, totalScore]);
+  }, [scores, totalScore, mode]);
+
+  const currentAdvice = adviceMap[mode];
 
   return (
-    <div className="card ai-advisor-section">
+    <div className={`card ai-advisor-section ${mode === 'sarcastic' ? 'mode-sarcastic' : ''}`}>
       <div className="card-title-container">
         <h3 className="card-title">
-          <span>🤖</span> AIアドバイザーの個別分析
+          <span>{mode === 'kind' ? '🤖' : '🔥'}</span> AIアドバイザーの個別分析
         </h3>
         <span className="ai-badge">Powered by Gemini AI</span>
+      </div>
+
+      {/* モード切り替えボタン */}
+      <div className="ai-mode-toggle">
+        <button 
+          className={`mode-btn ${mode === 'kind' ? 'active' : ''}`}
+          onClick={() => setMode('kind')}
+        >
+          <span>🌱</span> 優しめ
+        </button>
+        <button 
+          className={`mode-btn sarcastic ${mode === 'sarcastic' ? 'active' : ''}`}
+          onClick={() => setMode('sarcastic')}
+        >
+          <span>👿</span> 毒舌
+        </button>
       </div>
       
       {loading && (
         <div className="ai-loading">
           <div className="ai-spinner"></div>
-          <p>あなたの回答を深く分析して、最適なアドバイスを生成しています...</p>
+          <p>
+            {mode === 'kind' 
+              ? 'あなたの回答を深く分析して、最適なアドバイスを生成しています...' 
+              : '現実を直視させるための、愛の鞭を準備しています...'}
+          </p>
         </div>
       )}
 
@@ -66,9 +94,9 @@ export const AIAdvisor: React.FC<AIAdvisorProps> = ({ scores, totalScore }) => {
         </div>
       )}
 
-      {advice && !loading && (
-        <div className="ai-content fade-in">
-          {advice.split('\n').map((line, i) => {
+      {currentAdvice && !loading && (
+        <div className="ai-content fade-in" key={mode}>
+          {currentAdvice.split('\n').map((line, i) => {
             // シンプルなMarkdown対応（太字や見出し風）
             if (line.startsWith('###')) {
               return <h4 key={i} className="ai-h4">{line.replace('###', '').trim()}</h4>;

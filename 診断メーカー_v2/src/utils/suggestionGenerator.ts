@@ -1,7 +1,6 @@
-import type { CategoryScores } from '../types';
+import type { CategoryScores, Category, SuggestionItem } from '../types';
 import { suggestions } from '../data/suggestions';
 import { getScoreLevel } from './scoreCalculator';
-import type { SuggestionItem } from '../types';
 
 interface PrioritizedSuggestion extends SuggestionItem {
   priority: number;
@@ -16,9 +15,10 @@ interface PrioritizedSuggestion extends SuggestionItem {
 export function generateSuggestions(scores: CategoryScores): SuggestionItem[] {
   const allSuggestions: PrioritizedSuggestion[] = [];
 
-  Object.entries(scores).forEach(([category, score]) => {
-    const level = getScoreLevel(score);
-    const categorySuggestions = suggestions[category as keyof typeof suggestions][level];
+  Object.entries(scores).forEach(([key, score]) => {
+    const category = key as Category;
+    const level = getScoreLevel(score, category);
+    const categorySuggestions = suggestions[category][level];
     
     categorySuggestions.forEach((suggestion, index) => {
       allSuggestions.push({

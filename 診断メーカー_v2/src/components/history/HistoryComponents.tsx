@@ -1,6 +1,8 @@
 import React from 'react';
 import type { QuizHistory, QuizHistoryItem, Category } from '../../types';
 import { categoryInfo } from '../../data/categoryInfo';
+import { normalizeScore } from '../../utils/scoreCalculator';
+import { questions } from '../../data/questions';
 
 interface HistoryListProps {
   history: QuizHistory;
@@ -50,7 +52,8 @@ export const HistoryList: React.FC<HistoryListProps> = ({ history, onSelect }) =
           </div>
           <div className="history-categories">
             {(Object.keys(item.categoryScores) as Category[]).map(cat => {
-              const normalizedScore = Math.round(((30 - item.categoryScores[cat]) / 30) * 100);
+              const questionCount = questions.filter(q => q.category === cat).length;
+              const normalizedScore = normalizeScore(item.categoryScores[cat], questionCount);
               return (
                 <span key={cat} className="history-category-badge">
                   {categoryInfo[cat].icon} {Math.max(0, normalizedScore)}点

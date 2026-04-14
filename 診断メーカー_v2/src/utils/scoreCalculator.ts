@@ -156,7 +156,7 @@ export function generateAnalysis(scores: CategoryScores): string {
   }
 
   if (strengths.length > 0) {
-    if (issues.length === 0 && strengths.length === 4) {
+    if (issues.length === 0 && strengths.length === Object.keys(scores).length) {
       // 全カテゴリ良好な場合
       parts.push(`${strengths.join('、')}は良好に管理されています。全体的にバランスの取れた生活習慣です。`);
     } else {

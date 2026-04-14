@@ -8,7 +8,7 @@
 }
 
 :root {
-  /* カラーパレット - 落ち着いたビジネス向け */
+  /* 基本カラー */
   --primary: #2563eb;
   --primary-dark: #1d4ed8;
   --secondary: #64748b;
@@ -17,25 +17,32 @@
   --danger: #ef4444;
   --bg-light: #f8fafc;
   --bg-white: #ffffff;
-  --text-primary: #1e293b;
-  --text-secondary: #64748b;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
   --border: #e2e8f0;
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  
-  /* カテゴリカラー */
-  --sleep-color: #8b5cf6;
-  --study-color: #06b6d4;
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+  /* カテゴリカラー - より鮮やかなトーンに */
+  --sleep-color: #7c3aed;
+  --study-color: #0891b2;
   --phone-color: #f59e0b;
   --planning-color: #10b981;
+  --health-color: #ef4444;
+  --social-color: #ec4899;
+
+  /* アニメーション用 */
+  --transition-fast: 0.2s ease;
+  --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans JP', sans-serif;
-  background-color: var(--bg-light);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans JP', sans-serif;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
   color: var(--text-primary);
   line-height: 1.6;
   min-height: 100vh;
+  padding-bottom: 40px;
 }
 
 /* ============================================
@@ -72,12 +79,20 @@ body {
    カードコンポーネント
    ============================================ */
 .card {
-  background: var(--bg-white);
-  border-radius: 12px;
-  padding: 24px;
-  margin-bottom: 16px;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 32px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
 }
 
 .card-title {
@@ -190,6 +205,8 @@ body {
 .category-study { background: #cffafe; color: #0891b2; }
 .category-phone { background: #fef3c7; color: #d97706; }
 .category-planning { background: #d1fae5; color: #059669; }
+.category-health { background: #fee2e2; color: #dc2626; }
+.category-social { background: #fce7f3; color: #db2777; }
 
 .question-text {
   font-size: 1.125rem;
@@ -523,6 +540,21 @@ body {
 }
 
 /* アニメーション */
+.fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* ============================================
    AIアドバイザー
    ============================================ */
@@ -641,4 +673,263 @@ body {
     flex-direction: column;
     align-items: flex-start;
   }
+
+  /* ヘッダー */
+  .app-header {
+    margin-bottom: 20px;
+    padding: 16px 0;
+  }
+
+  .app-header h1 {
+    font-size: 1.35rem;
+  }
+
+  .app-header p {
+    font-size: 0.85rem;
+  }
+
+  /* カード */
+  .card {
+    padding: 20px 16px;
+    border-radius: 16px;
+    margin-bottom: 16px;
+  }
+
+  /* コンテナ */
+  .container {
+    padding: 16px 12px;
+  }
+
+  /* フィーチャーグリッド */
+  .feature-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 16px 0;
+  }
+
+  .feature-item {
+    padding: 12px 8px;
+    font-size: 0.75rem;
+  }
+
+  .feature-icon {
+    font-size: 1.25rem;
+  }
+
+  /* 質問画面 */
+  .question-text {
+    font-size: 1rem;
+  }
+
+  .option-btn {
+    padding: 14px 16px;
+    font-size: 0.9rem;
+  }
+
+  .question-category {
+    font-size: 0.7rem;
+  }
+
+  /* 結果画面 */
+  .total-score {
+    font-size: 2.5rem;
+  }
+
+  .result-summary {
+    padding: 24px 16px;
+  }
+
+  .result-message {
+    font-size: 1rem;
+  }
+
+  /* カテゴリスコア */
+  .category-name {
+    font-size: 0.9rem;
+  }
+
+  .category-score {
+    font-size: 1rem;
+  }
+
+  /* 履歴 */
+  .summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .summary-value {
+    font-size: 1.1rem;
+  }
+
+  .history-categories {
+    gap: 4px;
+  }
+
+  .history-category-badge {
+    font-size: 0.7rem;
+    padding: 3px 6px;
+  }
+
+  /* スコア凡例 */
+  .score-legend {
+    gap: 10px;
+  }
+
+  .legend-item {
+    font-size: 0.7rem;
+  }
+
+  /* チャート */
+  .chart-container {
+    height: 220px !important;
+  }
+
+  /* AI アドバイザー */
+  .ai-badge {
+    font-size: 0.6rem;
+    padding: 3px 8px;
+  }
+
+  .ai-content {
+    font-size: 0.875rem;
+  }
+
+  .ai-h3 {
+    font-size: 1rem;
+  }
+
+  .ai-h4 {
+    font-size: 0.9rem;
+  }
+
+  /* ボタン */
+  .btn {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+  }
+
+  /* 分析セクション */
+  .analysis-text {
+    font-size: 0.9rem;
+  }
+
+  .suggestions-list li {
+    padding: 10px 0;
+    gap: 8px;
+  }
+
+  .suggestion-text {
+    font-size: 0.875rem;
+  }
+}
+
+/* 小さいスマホ向け */
+@media (max-width: 380px) {
+  .feature-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .total-score {
+    font-size: 2rem;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ============================================
+   AIアドバイザー (毒舌モード対応)
+   ============================================ */
+.ai-mode-toggle {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  padding: 4px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+}
+
+.mode-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.mode-btn span {
+  font-size: 1.1rem;
+}
+
+.mode-btn.active {
+  background: white;
+  color: var(--primary);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.mode-btn.sarcastic.active {
+  color: #ef4444;
+}
+
+/* 毒舌モード時のカード全体のスタイル */
+.mode-sarcastic {
+  background: linear-gradient(to bottom right, #1e1b4b, #450a0a) !important;
+  border: 1px solid #7f1d1d !important;
+}
+
+.mode-sarcastic .card-title {
+  color: #fca5a5 !important;
+}
+
+.mode-sarcastic .ai-badge {
+  background: linear-gradient(135deg, #7f1d1d, #450a0a);
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+}
+
+.mode-sarcastic .ai-p,
+.mode-sarcastic .ai-li,
+.mode-sarcastic .ai-content {
+  color: #fecaca !important;
+}
+
+.mode-sarcastic .ai-h3 {
+  color: #fca5a5 !important;
+  border-bottom-color: #7f1d1d !important;
+}
+
+.mode-sarcastic .ai-h4 {
+  color: #f87171 !important;
+}
+
+.mode-sarcastic .ai-li::before {
+  color: #ef4444 !important;
+}
+
+.mode-sarcastic .ai-mode-toggle {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.mode-sarcastic .mode-btn {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.mode-sarcastic .mode-btn.active {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+.mode-sarcastic .ai-spinner {
+  border-color: rgba(239, 68, 68, 0.2);
+  border-left-color: #ef4444;
 }

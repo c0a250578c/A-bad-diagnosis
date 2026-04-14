@@ -17,12 +17,16 @@ import {
 import { categoryInfo } from '../../data/categoryInfo';
 import type { CategoryScores, Category } from '../../types';
 
+import { normalizeScore } from '../../utils/scoreCalculator';
+import { questions } from '../../data/questions';
+
 /**
  * カテゴリ別スコアをRecharts用データに変換
  */
 function convertToRadarData(scores: CategoryScores): Array<{ subject: string; score: number; fullMark: number }> {
   return (Object.keys(scores) as Category[]).map((category) => {
-    const normalizedScore = Math.round(((30 - scores[category]) / 30) * 100);
+    const questionCount = questions.filter(q => q.category === category).length;
+    const normalizedScore = normalizeScore(scores[category], questionCount);
     return {
       subject: categoryInfo[category].name,
       score: Math.max(0, normalizedScore),
@@ -37,7 +41,7 @@ interface ScoreRadarChartProps {
 
 /**
  * レーダーチャートコンポーネント
- * 4カテゴリのスコアを可視化
+ * 各カテゴリのスコアを可視化
  */
 export const ScoreRadarChart: React.FC<ScoreRadarChartProps> = ({ scores }) => {
   const data = convertToRadarData(scores);
