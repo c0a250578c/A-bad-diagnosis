@@ -16,7 +16,7 @@ export const AIAdvisor: React.FC<AIAdvisorProps> = ({ scores, totalScore }) => {
     kind: null,
     sarcastic: null
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(!adviceMap[mode]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
