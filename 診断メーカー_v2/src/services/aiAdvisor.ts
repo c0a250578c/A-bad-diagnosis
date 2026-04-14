@@ -2,7 +2,7 @@ import type { CategoryScores } from '../types';
 import { categoryInfo } from '../data/categoryInfo';
 import { normalizeScore } from '../utils/scoreCalculator';
 
-const MODEL = 'gemini-1.5-flash';
+const MODEL = 'gemini-2.0-flash';
 
 import { questions } from '../data/questions';
 
